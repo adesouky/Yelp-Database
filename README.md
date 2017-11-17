@@ -182,6 +182,7 @@ Functionality apart, we will evaluate your submissions carefully along the follo
 
 - Use example code we have provided to implement a multi-threaded server.
 - You can use a parser generator (such as ANTLR) for parsing queries (or roll your own).
+- Consider using streams and parallel streams for some of the tasks.
 - There are several easier tasks you can accomplish before focusing on structured queries. **Use your time wisely.**
 - It is critical that your `build.gradle` file reflect any dependencies that your work may have (external libraries such as JSON parsers.) (You work will not be graded otherwise.)
 - When you complete this assignment, you would have implemented an approximation of a relational database. In the relational database world, a row is analogous to an instance of a datatype while a table definition is analogous to a datatype definition.
