@@ -10,6 +10,8 @@ This machine problem is designed to allow you to explore multiple aspects of sof
 
 In addition to these aspects, the problem also touches upon rudimentary methods for statistical inference and learning.
 
+**Read this document carefully before you start.**
+
 ### Logistics
 
 + You should complete this assignment in pairs.
