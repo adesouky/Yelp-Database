@@ -10,6 +10,12 @@ This machine problem is designed to allow you to explore multiple aspects of sof
 
 In addition to these aspects, the problem also touches upon rudimentary methods for statistical inference and learning.
 
+### Logistics
+
++ You should complete this assignment in pairs.
++ The submission deadline is December 1, 11:59pm Vancouver time.
++ To get your Github repositories set up, using [this link](https://classroom.github.com/g/DIS5KaZf).
+
 ### Background
 
 For this machine problem, you will work with an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, you will work with data (in [JSON](https://en.wikipedia.org/wiki/JSON) format) on restaurants, and this data includes information about some restaurants, reviews of the restaurants, and user information (for those contributing reviews).
@@ -32,6 +38,8 @@ You should design this datatype to support a variety of useful operations. You h
 To enable a reusable design, you many also want to examine some of the Amazon datasets (see [`http://jmcauley.ucsd.edu/data/amazon/`](http://jmcauley.ucsd.edu/data/amazon/)) and determine all the other datatypes you may need as well as useful subtype relationships. Think of simple types that can fit a variety of database situations and then subtype them to specialize for `YelpDB`.
 
 Before you start writing a lot of code, you should design the datatypes you want to create: what operations could these types support, what is a suitable representation and what are the rep invariants and abstraction functions. (You will have to document your design and discuss this with the instructor or a TA.) Think about enabling useful operations for your database and do not implement only the methods dictated by the `MP5Db` interface.
+
+For this part, complete a document called `Design.md` and place it in the main folder for your repository (where you would find this `README.md` file.) In this document, you should describe the choices you have made or plan on making. **This document should be available to the TAs and the instructor 12 hours ahead of your meeting with them.**
 
 ### Part II: Statistical Learning
 
@@ -162,17 +170,24 @@ We will use the following approximate rubric to grade your work:
 | Database Implementation: Structured Queries | 20% |
 
 Functionality apart, we will evaluate your submissions carefully along the following dimensions:
-+ code style;
++ code style (e.g., an A on Codacy);
 + clear specifications for methods;
-+ implementation of unit tests;
++ implementation of unit tests (high test coverage and integration with Coveralls.io);
 + code-level comments as appropriate;
 + comments the indicate clearly what the representation invariants and abstraction functions are for the datatypes you create.
-
-You may lose up to 40% of your score for not following some of the above non-functional requirements.
 
 ### Hints
 
 - Use example code we have provided to implement a multi-threaded server.
 - You can use a parser generator (such as ANTLR) for parsing queries (or roll your own).
 - There are several easier tasks you can accomplish before focusing on structured queries. **Use your time wisely.**
+- It is critical that your `build.gradle` file reflect any dependencies that your work may have (external libraries such as JSON parsers.) (You work will not be graded otherwise.)
 - When you complete this assignment, you would have implemented an approximation of a relational database. In the relational database world, a row is analogous to an instance of a datatype while a table definition is analogous to a datatype definition.
+- Ensure that you have Codacy and Coveralls set up early.
+- Your Github repo should reflect contributions from both team members.
+
+### Submission
+
+1. Commit and push your work to Github.
+2. Include a `Team.md` document where you indicate who worked on this assignment and how the work was divided up.
+3. Add a comment in the text box on Canvas indicating that you have submitted the work and the names of the students in the pair.
