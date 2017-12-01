@@ -62,8 +62,8 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public List<Restaurant> getRestaurants() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>(RestaurantList);
+		
 	}
 
 	@Override

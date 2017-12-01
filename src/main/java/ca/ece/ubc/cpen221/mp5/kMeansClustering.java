@@ -4,26 +4,18 @@ import java.util.*;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
+import ca.ece.ubc.cpen221.mp5.Classes.*;
 
-public class kMeansClustering implements MP5Db {
 
-	@Override
-	public Set getMatches(String queryString) {
-		// TODO Auto-generated method stub
-		return null;
+public class kMeansClustering  {
+	
+	private List<Centroid> centroidList;
+	private Database dataBase;
+	
+	public kMeansClustering (Database db) {
+		this.dataBase = db;
 	}
-
-	@Override
-	public String kMeansClusters_json(int k) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ToDoubleBiFunction getPredictorFunction(String user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	/**
 	 * Returns a List of Sets: each Set represents a cluster of restaurants. 
@@ -32,118 +24,87 @@ public class kMeansClustering implements MP5Db {
 	 */
 	public List<Set> getClustersOfResturants(int k){
 		List<Set> clusters = new ArrayList<Set>();
-		Map<Centroid, Set<Centroid>> groupMap = new HashMap<Centroid, Set<Centroid>>();  //NOTE: change to set of Restaurants
-		Centroid[] centroidArray = new Centroid[k];
+		Map<Centroid, Set<Restaurant>> groupMap = new HashMap<>();
 		Double maxRestaurantLong = 1.0; //change to actual value
 		Double maxResturantLat = 1.0; //change to actual value
 		//need to get max value of range of restaurant coordinates 
 		
-		//create # of new clusters corresponding to #k with random x and y values
+		//create # of new centroids corresponding to #k by initially assigning each centroid to the location of a random resturant
+		//by doing this, it protects against the case where a centroid could have no restaunts assigned to it
 		for(int i=0; i<k; i++) {
-			centroidArray[i] = Centroid.randomLocation(maxRestaurantLong, maxResturantLat); //Math.random()*maxvalue of range of restaurant locations
+			centroidList.add(Centroid.setInitialLocation(dataBase.getRestaurants()));
 		}
+	
+		//Initialize all restaurants to a group
+		groupMap = mapResturants(dataBase.getRestaurants());
 		
-		//could put first thing at a resturant location to prevent issue where a centriod woud have no resturant
-		//ranomly place all centriods - do this in previous loop?
-		
-		//loop - stop when location of all previous centroids are the same as the current location of centriod
-		// how would I do this because the array would just be a reference???
-		//
-		
-		Centroid[] prevCentroidArray = centroidArray;
-		while(!prevCentroidArray.equals(centroidArray)) {
+		List<Centroid> prevCentroidList = centroidList;
+		//keep looping until list of previos centroids is equal to the list of current centroids
+		do { 
 			for(int j=0; j < k; j++) {
-				//will have to get a new value first and then compare
-				//get new centroid location and update the x and y based on the average of location value
+
+				prevCentroidList = centroidList; 
 				
-				//method - compute new centriod location based on restaurants and update the map with those restaurants
-				centroidArray[j] = Centroid.setAvgLocation(groupMap.get(centroidArray[j])); //sets the centroid location to the new average of all the restaurants around it
-				//once we set the new average location, now we need to change all the resturants to the new groups
-				
-				
-				Set<Centroid> restSet = groupMap.get(centroidArray[j]);
-				for(Centroid rest : restSet) {
-					if()
-				}
-				
-				
-				
-				
-				/*if(prevCentroidArray[j].getX() != centroidArray[j].getY() || prevCentroidArray[j].getX() != centroidArray[j].getY()) {
-					continue;
-				} else if(prevCentroidArray[0].getX() != centroidArray[0].getY() || prevCentroidArray[0].getX() != centroidArray[0].getY()) {
-					continue;
-				} else if(prevCentroidArray[0].getX() != centroidArray[0].getY() || prevCentroidArray[0].getX() != centroidArray[0].getY()) {
-					continue;
-				} else {
-					break; //or return thing
-				}*/
-				
+				//get new average location for each centroid in centroidList
+				Set restaurantSet = groupMap.get(centroidList.get(j));
+				centroidList.set(j, Centroid.setAvgLocation(restaurantSet)); //sets the centroid location to the new average of all the restaurants around it
 			}
+			//after setting the centroids to the new average location, re-map restaurants to their closest centroid
+			groupMap = mapResturants(dataBase.getRestaurants()); 
 		
-		}
-		//add all sets of resturants from groupMap to clusters list of sets
+		} while(!prevCentroidList.equals(centroidList));
+		
+		
+		//add all sets of restaurants from groupMap to clusters list of sets
 		for(int m=0; m < k; m++) {
-			clusters.add(groupMap.get(centroidArray[m]));
+			clusters.add(groupMap.get(centroidList.get(m)));
 		}
 		return clusters;
 	}
+
 	
-	
-	public Map<Centroid, Set<Centroid>> giveResturantsGroup(Map<Centroid, Set<Centroid>> currRestMap, Centroid[] centArray) {
-		Map<Centroid, Set<Centroid>> restMap = new HashMap<Centroid, Set<Centroid>>(); //change to set of resturant
+	/**
+	 * 
+	 * @param Restaurants
+	 * @return
+	 */
+	public Map<Centroid, Set<Restaurant>> mapResturants (List<Restaurant> Restaurants){
+		Map<Centroid, Set<Restaurant>> restaurantMap = new HashMap<>();
+		Map<Restaurant, Centroid> centroidMap = new HashMap<>();
+		Set<Restaurant> restSet = new HashSet<>();
+		Centroid currentCent = centroidList.get(0);
 		
-			for (int i = 0; i < centArray.length -1; i++) {
-				Set<Centroid> restSetPrev = restMap.get(centArray[i]); //changhe to set of resturant
-				for (int j = i + 1; j < centArray.length; j++) {
-					Set<Centroid> restSetCur = restMap.get(centArray[j]); //changhe to set of resturant
-					
-					//if the distance for one centroid is less than another move it to the other group
-					//make a method called move resturant?
-					for(Centroid rest : restSetPrev) {
-						if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
-						centArray[j].findDistance(rest.getLatitude(), rest.getLongitude()) ){
-							//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
-							restSetCur.add(rest); //add it to the current set
-							restSetPrev.remove(rest);
-							//remove it from the previous set
-						}
-						
-					}
-					
-				}
-				restMap.put(centArray[i], restSetPrev); //add curr sets to the new map
-				//restSetPrev = restSet; //set prev to curr
-			}
-			
-			
-			
-		//Set<Centroid> restSetPrev = restMap.get(centArray[0]); //changhe to set of resturant
-			
-		for(int i=0; i < centArray.length -1; i++ ) {
-		//	Set<Centroid> restSet = restMap.get(centArray[i+1]); //changhe to set of resturant
-		
-			
-			
-			
-			//need to compare all sets to eachother - this is not right
-			for(Centroid rest : restSetPrev) {
-				if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
-					centArray[i+1].findDistance(rest.getLatitude(), rest.getLongitude()) ){
-					//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
-					restSet.add(rest); //add it to the current set
-					restSetPrev.remove(rest);
-					//remove it from the previous set
-					
+		for(Restaurant rest : Restaurants) {
+			double minDistance = Double.MAX_VALUE;
+			//looks through all centroids and finds the one that is the shortest distance from the restaurant
+			for(Centroid centroid : centroidList) {
+				double distance = centroid.findDistance(rest.getLatitude(), rest.getLongitude());
+				//minDistance = Math.min(distance, minDistance);
+				if(distance < minDistance) {
+					minDistance = distance;
+					currentCent = centroid; 
 				}
 			}
-			restMap.put(centArray[i], restSet); //add curr sets to the new map
-			restSetPrev = restSet; //set prev to curr
-						
+			
+			//maps the centroid that has the shortest distance to the restaurant
+			centroidMap.put(rest, currentCent);
 		}
-		return restMap;
-		
+		//loop through centroidList and if centroid == the current centroid add the restaurant to the set 
+		//then add that set to the restuarntMap
+		for (Centroid cent : centroidList) {
+			Set<Restaurant> restaurantSet = new HashSet<Restaurant>();
+			for(Restaurant rester : centroidMap.keySet()) {
+				//if it matches the current key, add to set
+				if(centroidMap.get(rester).equals(cent)) {
+					restaurantSet.add(rester);
+				}
+			}
+			//map the set of restaurants to it's centroid
+			restaurantMap.put(cent, restaurantSet);
+		}
+		return restaurantMap;
 	}
+	
 	
 	/**
 	 * Converts a List of sets to JSON format 
