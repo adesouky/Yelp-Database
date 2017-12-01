@@ -93,6 +93,7 @@ public class kMeansClustering implements MP5Db {
 	public Map<Centroid, Set<Centroid>> giveResturantsGroup(Map<Centroid, Set<Centroid>> currRestMap, Centroid[] centArray) {
 		Map<Centroid, Set<Centroid>> restMap = new HashMap<Centroid, Set<Centroid>>(); //change to set of resturant
 		
+		
 			for (int i = 0; i < centArray.length -1; i++) {
 				Set<Centroid> restSetPrev = restMap.get(centArray[i]); //changhe to set of resturant
 				for (int j = i + 1; j < centArray.length; j++) {
@@ -124,23 +125,23 @@ public class kMeansClustering implements MP5Db {
 		//	Set<Centroid> restSet = restMap.get(centArray[i+1]); //changhe to set of resturant
 		
 			
-			
-			
-			//need to compare all sets to eachother - this is not right
-			for(Centroid rest : restSetPrev) {
-				if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
-					centArray[i+1].findDistance(rest.getLatitude(), rest.getLongitude()) ){
-					//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
-					restSet.add(rest); //add it to the current set
-					restSetPrev.remove(rest);
-					//remove it from the previous set
-					
-				}
-			}
-			restMap.put(centArray[i], restSet); //add curr sets to the new map
-			restSetPrev = restSet; //set prev to curr
-						
-		}
+//			
+//			
+//			//need to compare all sets to eachother - this is not right
+//			for(Centroid rest : restSetPrev) {
+//				if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
+//					centArray[i+1].findDistance(rest.getLatitude(), rest.getLongitude()) ){
+//					//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
+//					restSet.add(rest); //add it to the current set
+//					restSetPrev.remove(rest);
+//					//remove it from the previous set
+//					
+//				}
+//			}
+//			restMap.put(centArray[i], restSet); //add curr sets to the new map
+//			restSetPrev = restSet; //set prev to curr
+//						
+}
 		return restMap;
 		
 	}
