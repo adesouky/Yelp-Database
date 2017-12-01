@@ -38,6 +38,9 @@ public class kMeansClustering  {
 		//Initialize all restaurants to a group
 		groupMap = mapResturants(dataBase.getRestaurants());
 		
+		 KMeansVisualizer v = new KMeansVisualizer(); //part of testing needs to be removed after
+		 v.setDelay(500); //part of testing needs to be removed after
+		
 		List<Centroid> prevCentroidList = centroidList;
 		//keep looping until list of previos centroids is equal to the list of current centroids
 		do { 
@@ -48,12 +51,27 @@ public class kMeansClustering  {
 				//get new average location for each centroid in centroidList
 				Set restaurantSet = groupMap.get(centroidList.get(j));
 				centroidList.set(j, Centroid.setAvgLocation(restaurantSet)); //sets the centroid location to the new average of all the restaurants around it
+				
+			
 			}
 			//after setting the centroids to the new average location, re-map restaurants to their closest centroid
 			groupMap = mapResturants(dataBase.getRestaurants()); 
-		
+			
+			//code for testing purposes, needs to be removed after
+			for(Centroid cent : centroidList) {
+				v.beginCluster(cent.getLatitude(), cent.getLongitude());
+				for (Restaurant point : groupMap.get(cent)){
+								v.addPoint(point.getLatitude(), point.getLongitude());
+					  		}
+			}
+			v.show();
+			v.setDelay(100000);
+			//v.setDelay(1);
+			
+			//end of testing section
+			
 		} while(!prevCentroidList.equals(centroidList));
-		
+		v.close();
 		
 		//add all sets of restaurants from groupMap to clusters list of sets
 		for(int m=0; m < k; m++) {
@@ -110,7 +128,8 @@ public class kMeansClustering  {
 	 * Converts a List of sets to JSON format 
 	 */
 	public void convertToJSON() {
-		
+		//use a library
+		//saving it to a file 
 	}
 
 }
