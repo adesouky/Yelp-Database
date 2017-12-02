@@ -43,11 +43,7 @@ public class Database implements YelpMP5DB{
 	
 	public List<YelpReview> getReviews(String userID) {
 		YelpReview[] FilteredReview = ReviewList.stream().filter(  a -> a.getUserid().equals(userID)).toArray(YelpReview[] :: new);
-		ReviewList.stream().filter(  a -> a.getUserid().equals(userID)).forEach(a-> System.out.println(a));
 		List<YelpReview> FilteredReviewList =  Arrays.asList(FilteredReview);
-		//System.out.println("snsnisnns" +FilteredReviewList);
-		//System.out.println(ReviewList);
-		List<String> UserId = new ArrayList<>();
 		return FilteredReviewList;
 	}
 	public Restaurant getRestaurant(String BusinessID) {
@@ -77,7 +73,7 @@ public class Database implements YelpMP5DB{
 		double b = Variables.get(1);
 		double r_squared = Variables.get(2);
 		
-		ToDoubleBiFunction<MP5Db<Restaurant>, String> i = (x,y) -> b*((Database) x).getRestaurant(y).getPrice() +a ;
+		ToDoubleBiFunction<MP5Db<Restaurant>, String> i = (x,y) -> ((b*((Database) x).getRestaurant(y).getPrice() +a) < 1) ? 1 : ((b*((Database) x).getRestaurant(y).getPrice() +a) >5) ? 5 : ((b*((Database) x).getRestaurant(y).getPrice() +a));
 		
 		return i;
 		
@@ -142,7 +138,7 @@ public class Database implements YelpMP5DB{
 	private List<Double> ComputeCoefficiants(String userID){
 		List<Double> returnList = new ArrayList<>();
 		List<YelpReview> Reviews = getReviews(userID);
-		System.out.println(Reviews);
+		
 		List<String> RestaurantsReviewedID =  Arrays.asList(Reviews.stream().map(a -> a.getBusinessid()).toArray(String[]:: new));
 		List<Restaurant> RestaurantsReviewed = new ArrayList<>();
 		for(String s: RestaurantsReviewedID) {
