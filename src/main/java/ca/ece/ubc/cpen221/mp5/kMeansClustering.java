@@ -5,14 +5,18 @@ import java.util.*;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import ca.ece.ubc.cpen221.mp5.Classes.*;
 
 
 public class kMeansClustering  {
 	
-	private List<Centroid> centroidList;
+	private List<Centroid> centroidList = new ArrayList<>();
 	private Database dataBase;
-	private Set<Restaurant> restaurantSet;
+	private Set<Restaurant> restaurantSet = new HashSet<>();
+	Map<Centroid, Set<Restaurant>> restaurantMap = new HashMap<>();
 	
 	public kMeansClustering (Database db) {
 		this.dataBase = db;
@@ -20,7 +24,6 @@ public class kMeansClustering  {
 	public kMeansClustering (Set<Restaurant> Restaurants) {
 		this.restaurantSet = Restaurants;
 	}
-	
 	
 	//need to make a main method in order to test it
 	public static void main(String[] args) {
@@ -42,8 +45,8 @@ public class kMeansClustering  {
 	 * @param k
 	 * @return a List of Sets: each Set represents a cluster of restaurants. 
 	 */
-	public List<Set> getClustersOfResturants(int k){
-		List<Set> clusters = new ArrayList<Set>();
+	public JSONArray getClustersOfResturants(int k){
+		List<Set<Restaurant>> clusters = new ArrayList<>();
 		Map<Centroid, Set<Restaurant>> groupMap = new HashMap<>();
 		Double maxRestaurantLong = 1.0; //change to actual value
 		Double maxResturantLat = 1.0; //change to actual value
@@ -51,12 +54,18 @@ public class kMeansClustering  {
 		
 		//create # of new centroids corresponding to #k by initially assigning each centroid to the location of a random resturant
 		//by doing this, it protects against the case where a centroid could have no restaunts assigned to it
+		//System.out.println("lalalalal");
+		//System.out.println(dataBase.getRestaurants());
 		for(int i=0; i<k; i++) {
 			centroidList.add(Centroid.setInitialLocation(dataBase.getRestaurants()));
+			//System.out.println(centroidList);
 		}
-	
+		//System.out.println("lalalalal");
 		//Initialize all restaurants to a group
+		//System.out.println("lalalalal");
 		groupMap = mapResturants(dataBase.getRestaurants());
+		
+		//System.out.println("lalalalal");
 		
 		 KMeansVisualizer v = new KMeansVisualizer(); //part of testing needs to be removed after
 		 v.setDelay(500); //part of testing needs to be removed after
@@ -64,7 +73,7 @@ public class kMeansClustering  {
 		List<Centroid> prevCentroidList = centroidList;
 		//keep looping until list of previos centroids is equal to the list of current centroids
 		do { 
-			int maxCentVal = groupMap.get(centroidList.get(0)).size();
+			int maxCentVal = 0; // groupMap.get(centroidList.get(0)).size();
 			Centroid maxCent = centroidList.get(0);
 			for(int j=0; j < k; j++) {
 
@@ -73,8 +82,11 @@ public class kMeansClustering  {
 				//get new average location for each centroid in centroidList
 				Set restaurantSet = groupMap.get(centroidList.get(j));
 				centroidList.set(j, Centroid.setAvgLocation(restaurantSet)); //sets the centroid location to the new average of all the restaurants around it
-				
+				groupMap = mapResturants(dataBase.getRestaurants());
 				//this gets the largest centroid
+				//System.out.println("groupMap" + groupMap);
+				//System.out.println(j);
+				//System.out.println(centroidList);
 				if(maxCentVal < groupMap.get(centroidList.get(j)).size()) {
 					maxCentVal = groupMap.get(centroidList.get(j)).size();
 					maxCent = centroidList.get(j);
@@ -83,6 +95,7 @@ public class kMeansClustering  {
 			}
 			//after setting the centroids to the new average location, re-map restaurants to their closest centroid
 			groupMap = mapResturants(dataBase.getRestaurants()); 
+			//System.out.println("lalalalal");
 			
 			//loop through all the centroids to check if any centroids have no restaurants
 			for(Centroid cent : centroidList) {
@@ -106,18 +119,18 @@ public class kMeansClustering  {
 					}
 			}
 			
-			
-			//code for testing purposes, needs to be removed after
-			for(Centroid cent : centroidList) {
-				v.beginCluster(cent.getLatitude(), cent.getLongitude());
-				for (Restaurant point : groupMap.get(cent)){
-								v.addPoint(point.getLatitude(), point.getLongitude());
-					  		}
-			}
-			v.show();
-			v.setDelay(100000);
-			//v.setDelay(1);
-			
+//			
+//			//code for testing purposes, needs to be removed after
+//			for(Centroid cent : centroidList) {
+//				v.beginCluster(cent.getLatitude(), cent.getLongitude());
+//				for (Restaurant point : groupMap.get(cent)){
+//								v.addPoint(point.getLatitude(), point.getLongitude());
+//					  		}
+//			}
+//			v.show();
+//			v.setDelay(100000);
+//			//v.setDelay(1);
+//			
 			//end of testing section
 			
 			
@@ -130,7 +143,7 @@ public class kMeansClustering  {
 		for(int m=0; m < k; m++) {
 			clusters.add(groupMap.get(centroidList.get(m)));
 		}
-		return clusters;
+		return convertToJSON(clusters);
 	}
 
 	
@@ -140,72 +153,105 @@ public class kMeansClustering  {
 	 * @return
 	 */
 	public Map<Centroid, Set<Restaurant>> mapResturants (List<Restaurant> Restaurants){
-		Map<Centroid, Set<Restaurant>> restaurantMap = new HashMap<>();
-		Map<Restaurant, Centroid> centroidMap = new HashMap<>();
-		Set<Restaurant> restSet = new HashSet<>();
+		
 		Centroid currentCent = centroidList.get(0);
+		//System.out.println(centroidList);
+		//System.out.println("Mapp5ara List  " + centroidList);
 		
 		for(Restaurant rest : Restaurants) {
 			double minDistance = Double.MAX_VALUE;
+			//Set<Restaurant> restaurantSet = new HashSet<Restaurant>();
+			
 			//looks through all centroids and finds the one that is the shortest distance from the restaurant
 			for(Centroid centroid : centroidList) {
+				//System.out.println("Centroid" + centroid);
+				if(!restaurantMap.containsKey(centroid)) {
+					restaurantMap.put(centroid, new HashSet<Restaurant>());
+				}
 				double distance = centroid.findDistance(rest.getLatitude(), rest.getLongitude());
+				
 				//minDistance = Math.min(distance, minDistance);
 				if(distance < minDistance) {
 					minDistance = distance;
 					currentCent = centroid; 
 				}
+				
 			}
 			
+			
+			restaurantMap.get(currentCent).add(rest);
+			
 			//maps the centroid that has the shortest distance to the restaurant
-			centroidMap.put(rest, currentCent);
+			//centroidMap.put(rest, currentCent);
 		}
-		//loop through centroidList and if centroid == the current centroid add the restaurant to the set 
-		//then add that set to the restuarntMap
-		for (Centroid cent : centroidList) {
-			Set<Restaurant> restaurantSet = new HashSet<Restaurant>();
-			for(Restaurant rester : centroidMap.keySet()) {
-				//if it matches the current key, add to set
-				if(centroidMap.get(rester).equals(cent)) {
-					restaurantSet.add(rester);
-				}
-			}
-			//map the set of restaurants to it's centroid
-			restaurantMap.put(cent, restaurantSet);
-		}
+		//System.out.println("dnsudsadnn   " + restaurantMap);
+		System.out.println(restaurantMap);
+
 		return restaurantMap;
+
 	}
+		//loop through centroidList and if centroid == the current centroid add the restaurant to the set 
+//		//then add that set to the restuarntMap
+//		for (Centroid cent : cen troidList) {
+//			Set<Restaurant> restaurantSet = new HashSet<Restaurant>();
+//			for(Restaurant rester : centroidMap.keySet()) {
+//				//if it matches the current key, add to set
+//				if(centroidMap.get(rester).equals(cent)) {
+//					restaurantSet.add(rester);
+//				}
+//			}
+//			//map the set of restaurants to it's centroid
+//			restaurantMap.put(cent, restaurantSet);
+//		}
 	
 	
-	public void checkForEmpty (Map<Centroid, Set<Restaurant>> groupMap ) {
-		//deal with if any centroids have no restaurants
-		//	int maxCentVal = groupMap.get(centroidList.get(0)).size();
-					for(Centroid cent : centroidList) {
-					//	maxCentVal = Math.max(maxCentVal, groupMap.get(cent).size());
-						if(groupMap.get(cent) == null) {
-							//we need to fix this by finding largest set of restaurants and setting half then remap it 
-							int maxCentVal = groupMap.get(centroidList.get(0)).size();
-							for(Centroid centroid : centroidList) {
-								maxCentVal = Math.max(maxCentVal, groupMap.get(centroid).size());
-							}
-							
-							//now break the cluster in two and set it 
-							//maxentroid will now have to be two new centroids
-							//find average location 
-							//create a
-							//break into two and assign half the resturants to the 
-							
-						}
-					}
-					return;
-	}
+	
+//	public void checkForEmpty (Map<Centroid, Set<Restaurant>> groupMap ) {
+//		//deal with if any centroids have no restaurants
+//		//	int maxCentVal = groupMap.get(centroidList.get(0)).size();
+//					for(Centroid cent : centroidList) {
+//					//	maxCentVal = Math.max(maxCentVal, groupMap.get(cent).size());
+//						if(groupMap.get(cent) == null) {
+//							//we need to fix this by finding largest set of restaurants and setting half then remap it 
+//							int maxCentVal = groupMap.get(centroidList.get(0)).size();
+//							for(Centroid centroid : centroidList) {
+//								maxCentVal = Math.max(maxCentVal, groupMap.get(centroid).size());
+//							}
+//							
+//							//now break the cluster in two and set it 
+//							//maxentroid will now have to be two new centroids
+//							//find average location 
+//							//create a
+//							//break into two and assign half the resturants to the 
+//							
+//						}
+//					}
+//					return;
+//	}
 	
 	/**
 	 * Converts a List of sets to JSON format 
 	 */
-	public void convertToJSON() {
-		//use a library
-		//saving it to a file 
+	public JSONArray convertToJSON(List<Set<Restaurant>> Clusters) {
+		//List<Object> RestaurantList = new ArrayList<>();
+		
+		JSONArray list = new JSONArray();
+		//System.out.println("xxx" + Clusters);
+		//List< Centroid> CentroidMapList = new ArrayList<>(restaurantMap.keySet());
+		for(Set<Restaurant> s : Clusters) {
+		//for(Centroid cent : restaurantMap.keySet()) {
+			for( Restaurant rest : s) {
+				 JSONObject obj = new JSONObject();
+				 obj.put("x", rest.getLongitude());
+				 obj.put("y", rest.getLatitude());
+				 obj.put("name", rest.getName());
+				 obj.put("cluster", Clusters.indexOf(s));
+				 obj.put("weight", 1);
+				// System.out.println(obj);
+				 list.add(obj);
+			}
+		}
+		return list;
 	}
 
 }
