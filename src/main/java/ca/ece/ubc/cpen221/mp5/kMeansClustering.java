@@ -1,3 +1,4 @@
+
 package ca.ece.ubc.cpen221.mp5;
 
 import java.util.*;
@@ -80,36 +81,6 @@ public class kMeansClustering  {
 				}
 			
 			}
-
-		}
-		//add all sets of resturants from groupMap to clusters list of sets
-		for(int m=0; m < k; m++) {
-			clusters.add(groupMap.get(centroidArray[m]));
-		}
-		return clusters;
-	}
-	
-	
-	public Map<Centroid, Set<Centroid>> giveResturantsGroup(Map<Centroid, Set<Centroid>> currRestMap, Centroid[] centArray) {
-		Map<Centroid, Set<Centroid>> restMap = new HashMap<Centroid, Set<Centroid>>(); //change to set of resturant
-		
-		
-			for (int i = 0; i < centArray.length -1; i++) {
-				Set<Centroid> restSetPrev = restMap.get(centArray[i]); //changhe to set of resturant
-				for (int j = i + 1; j < centArray.length; j++) {
-					Set<Centroid> restSetCur = restMap.get(centArray[j]); //changhe to set of resturant
-					
-					//if the distance for one centroid is less than another move it to the other group
-					//make a method called move resturant?
-					for(Centroid rest : restSetPrev) {
-						if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
-						centArray[j].findDistance(rest.getLatitude(), rest.getLongitude()) ){
-							//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
-							restSetCur.add(rest); //add it to the current set
-							restSetPrev.remove(rest);
-							//remove it from the previous set
-						}
-
 			//after setting the centroids to the new average location, re-map restaurants to their closest centroid
 			groupMap = mapResturants(dataBase.getRestaurants()); 
 			
@@ -117,7 +88,7 @@ public class kMeansClustering  {
 			for(Centroid cent : centroidList) {
 					if(groupMap.get(cent) == null || groupMap.get(cent).isEmpty()) { //CHECK: would the restaurant set be null or just empty
 						//we need to fix this by finding largest set of restaurants and setting half then remap it 
-
+						
 						//loop through and add first half of restaurants in the max set to the current centroid annd other half to the empty centroid
 						Set<Restaurant> maxHalf = new HashSet<Restaurant>();
 						Set<Restaurant> emptyHalf = new HashSet<Restaurant>();
@@ -150,27 +121,6 @@ public class kMeansClustering  {
 			//end of testing section
 			
 			
-
-//			
-//			
-//			//need to compare all sets to eachother - this is not right
-//			for(Centroid rest : restSetPrev) {
-//				if(centArray[i].findDistance(rest.getLatitude(), rest.getLongitude()) >
-//					centArray[i+1].findDistance(rest.getLatitude(), rest.getLongitude()) ){
-//					//if curr rest is greater distance than next centroid distnace, then that rest needs to be put into curr set
-//					restSet.add(rest); //add it to the current set
-//					restSetPrev.remove(rest);
-//					//remove it from the previous set
-//					
-//				}
-//			}
-//			restMap.put(centArray[i], restSet); //add curr sets to the new map
-//			restSetPrev = restSet; //set prev to curr
-//						
-}
-		return restMap;
-		
-
 			
 		} while(!prevCentroidList.equals(centroidList));
 		v.close();
@@ -248,7 +198,6 @@ public class kMeansClustering  {
 						}
 					}
 					return;
-
 	}
 	
 	/**
