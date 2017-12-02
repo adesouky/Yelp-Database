@@ -19,6 +19,4 @@ public class PredictorTest {
 		Double z= y.applyAsDouble((Database) x, "6QZR4ToHKlse0yhqpU5ijg");
 		System.out.println(z);
 	}
-	
-	
 }

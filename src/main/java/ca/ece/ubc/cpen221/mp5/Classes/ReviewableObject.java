@@ -73,12 +73,11 @@ public class ReviewableObject {
 		this.price=price;
 	}
 	
+
 	public Long getPrice() {
 		return new Long(price);
-	}
+	}	
 	
 	
 	
-	
-
 }
