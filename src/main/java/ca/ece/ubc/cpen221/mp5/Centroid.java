@@ -106,6 +106,7 @@ public class Centroid {
 		double randRestLat = restaurants.get(random).getLatitude();
 		double randRestLong = restaurants.get(random).getLongitude();
 		
+		//System.out.println(randRestLat+ " " +  randRestLong);
 		return new Centroid(randRestLat, randRestLong);
 	}
 }

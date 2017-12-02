@@ -65,8 +65,8 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public String kMeansClusters_json(int k) {
-		// TODO Auto-generated method stub
-		return null;
+		kMeansClustering kc = new kMeansClustering(this);
+		return kc.getClustersOfResturants(k).toJSONString();
 	}
 	/**
 	 * throws an illegalargumentexception if the user has 1 or less reviews.
@@ -187,6 +187,5 @@ public class Database implements YelpMP5DB{
 			returnList.add(2, r_squared);
 		}
 		return returnList;
-		
 	}
 }

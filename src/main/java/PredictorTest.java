@@ -19,4 +19,10 @@ public class PredictorTest {
 		Double z= y.applyAsDouble((Database) x, "6QZR4ToHKlse0yhqpU5ijg");
 		System.out.println(z);
 	}
+	
+	@Test
+	public void Test2() throws FileNotFoundException {
+		Database x= new Database("data/restaurants.json", "data/reviews.json" , "data/users.json");
+		System.out.println(x.kMeansClusters_json(5));
+	}
 }
