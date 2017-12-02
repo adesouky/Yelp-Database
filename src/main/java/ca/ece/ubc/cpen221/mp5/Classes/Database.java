@@ -5,9 +5,13 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.function.ToDoubleBiFunction;
 
+
 import org.junit.runner.manipulation.Filterable;
 
 import ca.ece.ubc.cpen221.mp5.MP5Db;
+
+import ca.ece.ubc.cpen221.mp5.kMeansClustering;
+
 
 public class Database implements YelpMP5DB{
 	
@@ -40,6 +44,7 @@ public class Database implements YelpMP5DB{
 		}
 		UserSc.close();
 	}
+
 	
 	public List<YelpReview> getReviews(String userID) {
 		YelpReview[] FilteredReview = ReviewList.stream().filter(  a -> a.getUserid().equals(userID)).toArray(YelpReview[] :: new);
@@ -51,6 +56,7 @@ public class Database implements YelpMP5DB{
 		Restaurant a= ab[0];
 		return a;
 	}
+
 	@Override
 	public Set getMatches(String queryString) {
 		// TODO Auto-generated method stub
@@ -95,8 +101,8 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public List<Restaurant> getRestaurants() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>(RestaurantList);
+		
 	}
 
 	@Override
