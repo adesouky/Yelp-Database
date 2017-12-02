@@ -3,6 +3,8 @@ package ca.ece.ubc.cpen221.mp5.Classes;
 import java.util.*;
 import java.util.function.ToDoubleBiFunction;
 
+import ca.ece.ubc.cpen221.mp5.kMeansClustering;
+
 public class Database implements YelpMP5DB{
 	
 	List<YelpUser> UserList;
@@ -30,6 +32,11 @@ public class Database implements YelpMP5DB{
 		UserSc.close();
 	}
 
+	/*public void getKMeansClustering(){
+		kMeansClustering kmeans = new kMeansClustering(this);
+		kmeans.main(null);
+	}*/
+	
 	@Override
 	public Set getMatches(String queryString) {
 		// TODO Auto-generated method stub

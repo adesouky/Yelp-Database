@@ -11,11 +11,30 @@ public class kMeansClustering  {
 	
 	private List<Centroid> centroidList;
 	private Database dataBase;
+	private Set<Restaurant> restaurantSet;
 	
 	public kMeansClustering (Database db) {
 		this.dataBase = db;
 	}
+	public kMeansClustering (Set<Restaurant> Restaurants) {
+		this.restaurantSet = Restaurants;
+	}
 	
+	
+	//need to make a main method in order to test it
+	public static void main(String[] args) {
+		//Database db;
+	//	Database db = new Database(); //create new database
+	//	kMeansClustering kmeans = new kMeansClustering(dataBase);
+	//	kmeans.getClustersOfResturants(5);
+	}
+	
+	/*public static void main(String[] args) {
+		//Database db;
+		Set
+		kMeansClustering kmeans = new kMeansClustering(dataBase);
+		kmeans.getClustersOfResturants(5);
+	}*/
 	
 	/**
 	 * Returns a List of Sets: each Set represents a cluster of restaurants. 
@@ -44,6 +63,8 @@ public class kMeansClustering  {
 		List<Centroid> prevCentroidList = centroidList;
 		//keep looping until list of previos centroids is equal to the list of current centroids
 		do { 
+			int maxCentVal = groupMap.get(centroidList.get(0)).size();
+			Centroid maxCent = centroidList.get(0);
 			for(int j=0; j < k; j++) {
 
 				prevCentroidList = centroidList; 
@@ -52,10 +73,38 @@ public class kMeansClustering  {
 				Set restaurantSet = groupMap.get(centroidList.get(j));
 				centroidList.set(j, Centroid.setAvgLocation(restaurantSet)); //sets the centroid location to the new average of all the restaurants around it
 				
+				//this gets the largest centroid
+				if(maxCentVal < groupMap.get(centroidList.get(j)).size()) {
+					maxCentVal = groupMap.get(centroidList.get(j)).size();
+					maxCent = centroidList.get(j);
+				}
 			
 			}
 			//after setting the centroids to the new average location, re-map restaurants to their closest centroid
 			groupMap = mapResturants(dataBase.getRestaurants()); 
+			
+			//loop through all the centroids to check if any centroids have no restaurants
+			for(Centroid cent : centroidList) {
+					if(groupMap.get(cent) == null || groupMap.get(cent).isEmpty()) { //CHECK: would the restaurant set be null or just empty
+						//we need to fix this by finding largest set of restaurants and setting half then remap it 
+						
+						//loop through and add first half of restaurants in the max set to the current centroid annd other half to the empty centroid
+						Set<Restaurant> maxHalf = new HashSet<Restaurant>();
+						Set<Restaurant> emptyHalf = new HashSet<Restaurant>();
+						int index =0;
+						for(Restaurant rest : groupMap.get(maxCent) ) {
+							if(index < groupMap.get(maxCent).size()/2) {
+								maxHalf.add(rest);
+							} else if(index >= groupMap.get(maxCent).size()/2) {
+								emptyHalf.add(rest);
+							}
+						}
+						//replace entry in map for the largest centroid we took restaurants from and the centroid that had no restaurants
+						groupMap.replace(cent, emptyHalf);
+						groupMap.replace(maxCent, maxHalf);
+					}
+			}
+			
 			
 			//code for testing purposes, needs to be removed after
 			for(Centroid cent : centroidList) {
@@ -70,8 +119,11 @@ public class kMeansClustering  {
 			
 			//end of testing section
 			
+			
+			
 		} while(!prevCentroidList.equals(centroidList));
 		v.close();
+		
 		
 		//add all sets of restaurants from groupMap to clusters list of sets
 		for(int m=0; m < k; m++) {
@@ -123,6 +175,29 @@ public class kMeansClustering  {
 		return restaurantMap;
 	}
 	
+	
+	public void checkForEmpty (Map<Centroid, Set<Restaurant>> groupMap ) {
+		//deal with if any centroids have no restaurants
+		//	int maxCentVal = groupMap.get(centroidList.get(0)).size();
+					for(Centroid cent : centroidList) {
+					//	maxCentVal = Math.max(maxCentVal, groupMap.get(cent).size());
+						if(groupMap.get(cent) == null) {
+							//we need to fix this by finding largest set of restaurants and setting half then remap it 
+							int maxCentVal = groupMap.get(centroidList.get(0)).size();
+							for(Centroid centroid : centroidList) {
+								maxCentVal = Math.max(maxCentVal, groupMap.get(centroid).size());
+							}
+							
+							//now break the cluster in two and set it 
+							//maxentroid will now have to be two new centroids
+							//find average location 
+							//create a
+							//break into two and assign half the resturants to the 
+							
+						}
+					}
+					return;
+	}
 	
 	/**
 	 * Converts a List of sets to JSON format 
