@@ -15,7 +15,7 @@ public class YelpReview extends Review {
 	private String business_id;
 	private Map<String, Long> votes = new HashMap<>();
 	private String user_id;
-	private Long stars;
+	private long stars;
 
 
 
@@ -63,10 +63,15 @@ public class YelpReview extends Review {
 		return new HashMap<>(votes);
 	}
 	public void addVote(String s) {
+		if(!votes.containsKey(s)) {
+			votes.put(s, (long) 0);
+		}
 		votes.replace(s, votes.get(s)+1);
 	}
 	public void removeVote(String s) {
+		if(votes.containsKey(s)) {
 		votes.replace(s, votes.get(s)-1);
+		}
 	}
 	
 	public void setType(String s) {
@@ -79,7 +84,7 @@ public class YelpReview extends Review {
 	public void setUserid(String s) {
 		this.user_id=s;
 	}
-	public void setStars(Long s) {
+	public void setStars(long s) {
 		this.stars = s;
 	}
 

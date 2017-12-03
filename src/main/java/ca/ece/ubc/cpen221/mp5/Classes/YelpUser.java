@@ -46,10 +46,15 @@ public class YelpUser extends User{
 	}
 	
 	public void addVote(String s) {
+		if(!votes.containsKey(s)) {
+			votes.put(s, (long) 0);
+		}
 		votes.replace(s, votes.get(s)+1);
 	}
 	public void removeVote(String s) {
+		if(votes.containsKey(s)) {
 		votes.replace(s, votes.get(s)-1);
+		}
 	}
 	
 	
