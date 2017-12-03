@@ -80,17 +80,17 @@ public class Centroid {
 	 * @return
 	 */
 	public double findDistance (double restLat, double restLong) {
-		double distance = Math.sqrt(Math.pow(Math.abs(this.longitude - restLat), 2) + Math.pow(Math.abs(this.longitude - restLong), 2) );
+		double distance = Math.sqrt(Math.pow(Math.abs(this.latitude - restLat), 2) + Math.pow(Math.abs(this.longitude - restLong), 2) );
 		return distance;
 	}
 	
-	//this method randomLocation is no longer used
-	public static Centroid randomLocation (double maxLat, double maxLong) { 
-		double randomLong = Math.random()*maxLong;
-		double randomLat = Math.random()*maxLat;
-		
-		return new Centroid(randomLat, randomLong);
-	}
+//	//this method randomLocation is no longer used
+//	public static Centroid randomLocation (double maxLat, double maxLong) { 
+//		double randomLong = Math.random()*maxLong;
+//		double randomLat = Math.random()*maxLat;
+//		
+//		return new Centroid(randomLat, randomLong);
+//	}
 	
 	/**
 	 * Returns a new Centroid at the location of a random restuant from the data base
@@ -100,7 +100,7 @@ public class Centroid {
 	 */
 	public static Centroid setInitialLocation (List<Restaurant> restaurants) {
 		Random rand = new Random();
-		int random = rand.nextInt(restaurants.size() - 1);
+		int random = getRandomNumberInRange(0, restaurants.size()-1);
 	//	int random = ThreadLocalRandom.current().nextInt(0, resturants.size() - 1);
 		
 		double randRestLat = restaurants.get(random).getLatitude();
@@ -109,4 +109,11 @@ public class Centroid {
 		//System.out.println(randRestLat+ " " +  randRestLong);
 		return new Centroid(randRestLat, randRestLong);
 	}
+
+	private static int getRandomNumberInRange(int min, int max) {
+	
+	
+	Random rand = new Random();
+	return rand.nextInt((max - min) + 1) + min;
+}
 }

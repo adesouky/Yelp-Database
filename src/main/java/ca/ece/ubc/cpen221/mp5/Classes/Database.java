@@ -68,6 +68,13 @@ public class Database implements YelpMP5DB{
 		kMeansClustering kc = new kMeansClustering(this);
 		return kc.getClustersOfResturants(k).toJSONString();
 	}
+	
+	
+	public Map kMeansClusters_Map(int k) {
+		kMeansClustering kc = new kMeansClustering(this);
+		
+		return kc.MapReturner(k);
+	}
 	/**
 	 * throws an illegalargumentexception if the user has 1 or less reviews.
 	 */
