@@ -5,12 +5,12 @@ import java.util.*;
 import ca.ece.ubc.cpen221.mp5.MP5Db;
 
 public interface YelpMP5DB extends MP5Db {
-
-	public List<YelpUser> lookupReviews( Long UserId);
 	
 	public List<YelpUser> getUsers();
 	
 	public List<Restaurant> getRestaurants();
+	
+	public List<YelpReview> getReviews();
 	
 	public void addUser(YelpUser newuser);
 	

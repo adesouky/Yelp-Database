@@ -118,16 +118,6 @@ public class Database implements YelpMP5DB{
 	
 
 	@Override
-	public List<YelpUser> lookupReviews(Long UserId) {
-		// TODO Auto-generated method stub
-		List<YelpUser> YelpUserList = new ArrayList();
-		for(YelpReview review : ReviewList) {
-			
-		}
-		return null;
-	}
-
-	@Override
 	public List<YelpUser> getUsers() {
 		return new ArrayList<>(UserList);
 	}
@@ -135,6 +125,11 @@ public class Database implements YelpMP5DB{
 	@Override
 	public List<Restaurant> getRestaurants() {
 		return new ArrayList<>(RestaurantList);
+	}
+	
+	@Override
+	public List<YelpReview> getReviews(){
+		return new ArrayList<>(ReviewList);
 	}
 
 	@Override
