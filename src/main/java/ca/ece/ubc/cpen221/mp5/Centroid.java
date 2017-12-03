@@ -83,8 +83,8 @@ public class Centroid {
 	 * @return
 	 */
 	public double findDistance (double restLat, double restLong) {
-		double distance = Math.sqrt(Math.pow(Math.abs(this.longitude - restLat), 2) + Math.pow(Math.abs(this.longitude - restLong), 2) );
-		return distance;
+		double distance = Math.sqrt(Math.pow(Math.abs(this.latitude - restLat), 2) + Math.pow(Math.abs(this.longitude - restLong), 2) );
+		return distance; 
 	}
 	
 	//this method randomLocation is no longer used
