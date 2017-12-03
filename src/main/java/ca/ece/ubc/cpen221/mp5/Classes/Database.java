@@ -15,10 +15,21 @@ import ca.ece.ubc.cpen221.mp5.kMeansClustering;
 
 public class Database implements YelpMP5DB{
 	
-	List<YelpUser> UserList=new ArrayList<>();
+	List<YelpUser> UserList = new ArrayList<>();
 	List<Restaurant> RestaurantList = new ArrayList<>();
-	List<YelpReview> ReviewList=new ArrayList<>();
+	List<YelpReview> ReviewList = new ArrayList<>();
 	
+	/**
+	 * Creates a new database from the three files given
+	 * @param File1
+	 * 			a string that represents a file
+	 * @param File2
+	 * 			a string that represents a file
+	 * @param File3
+	 * 			a string that represents a file
+	 * @throws FileNotFoundException
+	 * 			gets thrown if the file is not found
+	 */
 	public Database(String File1, String File2, String File3) throws FileNotFoundException{
 		File File11 = new File(File1);
 		File File22 = new File(File2);
@@ -45,18 +56,37 @@ public class Database implements YelpMP5DB{
 		UserSc.close();
 	}
 
-	
+	/**
+	 * Returns a list of Yelp Reviews that represents all reviews for a userID
+	 * @param userID
+	 * 			a string representing a user ID
+	 * @return a list of Yelp Reviews that represents all reviews for a userID
+	 */
 	public List<YelpReview> getReviews(String userID) {
 		YelpReview[] FilteredReview = ReviewList.stream().filter(  a -> a.getUserid().equals(userID)).toArray(YelpReview[] :: new);
 		List<YelpReview> FilteredReviewList =  Arrays.asList(FilteredReview);
 		return FilteredReviewList;
 	}
+	/**
+	 * Returns the restaurant corresponding to the businessID 
+	 * @param BusinessID 
+	 * 				a string that represents the ID of a business
+	 * @return the restaurant corresponding to the businessID
+	 */
 	public Restaurant getRestaurant(String BusinessID) {
 		Restaurant[] ab = RestaurantList.stream().filter(x -> x.getBusinessid().equals(BusinessID)).toArray(Restaurant[] :: new);
 		Restaurant a= ab[0];
 		return a;
 	}
 
+	
+	/**
+	 * Perform a structured query and return the set of objects that matches the
+	 * query
+	 * 
+	 * @param queryString
+	 * @return the set of objects that matches the query
+	 */
 	@Override
 	public Set getMatches(String queryString) {
 		// TODO Auto-generated method stub
@@ -90,57 +120,55 @@ public class Database implements YelpMP5DB{
 	@Override
 	public List<YelpUser> lookupReviews(Long UserId) {
 		// TODO Auto-generated method stub
+		List<YelpUser> YelpUserList = new ArrayList();
+		for(YelpReview review : ReviewList) {
+			
+		}
 		return null;
 	}
 
 	@Override
 	public List<YelpUser> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>(UserList);
 	}
 
 	@Override
 	public List<Restaurant> getRestaurants() {
 		return new ArrayList<>(RestaurantList);
+	}
+
+	@Override
+	public void addUser(YelpUser newUser) {
+		UserList.add(newUser);
+	}
+
+	@Override
+	public void addRestaurant(Restaurant newRestaurant) {
+		RestaurantList.add(newRestaurant);
+	}
+
+	@Override
+	public void addReview(YelpReview newReview) {
+		ReviewList.add(newReview);
+	}
+
+	@Override
+	public void removeUser(YelpUser user) {
+		UserList.remove(user);
+	}
+
+	@Override
+	public void removeRestaurant(Restaurant restaurant) {
+		RestaurantList.remove(restaurant);
 		
 	}
 
 	@Override
-	public void addUser() {
-		// TODO Auto-generated method stub
-		
+	public void removeReview(YelpReview review) {
+		ReviewList.remove(review);
 	}
-
-	@Override
-	public void addRestaurant() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addReview() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeUser() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeRestaurant() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeReview() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	
 	private List<Double> ComputeCoefficiants(String userID){
 		List<Double> returnList = new ArrayList<>();
 		List<YelpReview> Reviews = getReviews(userID);

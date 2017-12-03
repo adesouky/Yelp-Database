@@ -55,9 +55,12 @@ public class Centroid {
 	 * 			a list of restaurants in the database
 	 * @return a centroid now at the average location of all the restaurants it was mapped to
 	 */
-	public static Centroid setAvgLocation (Set<Restaurant> restaurants) { //change to type resturant instead
+	public static Centroid setAvgLocation (Set<Restaurant> restaurants, List<Restaurant> allRestsList) {
 		//get new average location for restaurants around it
 		//look at all resturants in this cluster, and then 
+		if(restaurants.size() == 0) {
+			return setInitialLocation(allRestsList);
+		}
 		double numRest = restaurants.size();
 		double totalLong = 0;
 		double totalLat = 0;
