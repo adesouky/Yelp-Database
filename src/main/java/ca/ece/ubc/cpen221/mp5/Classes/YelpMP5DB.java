@@ -12,16 +12,17 @@ public interface YelpMP5DB extends MP5Db {
 	
 	public List<Restaurant> getRestaurants();
 	
-	public void addUser();
 	
-	public void addRestaurant();
+	public void addUser(YelpUser c);
 	
-	public void addReview();
+	public void addRestaurant(Restaurant c);
 	
-	public void removeUser();
+	public void addReview(YelpReview c);
 	
-	public void removeRestaurant();
+	public void removeUser(YelpUser c);
 	
-	public void removeReview();
+	public void removeRestaurant(Restaurant c);
+	
+	public void removeReview(YelpReview c);
 	
 }

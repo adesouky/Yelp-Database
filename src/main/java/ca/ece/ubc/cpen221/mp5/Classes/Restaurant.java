@@ -112,7 +112,7 @@ public class Restaurant extends ReviewableObject {
 		return new Double (latitude);
 	}
 	
-	public void setLatitude( Long latitude) {
+	public void setLatitude( double latitude) {
 		this.latitude=latitude;
 	}
 	

@@ -93,6 +93,10 @@ public class Database implements YelpMP5DB{
 		//return null;
 	}
 	
+	
+	public List<YelpReview> getReviews(){
+		return new ArrayList<>(ReviewList);
+	}
 
 	@Override
 	public List<YelpUser> lookupReviews(Long UserId) {
@@ -102,8 +106,8 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public List<YelpUser> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>(UserList);
+		
 	}
 
 	@Override
@@ -113,38 +117,37 @@ public class Database implements YelpMP5DB{
 	}
 
 	@Override
-	public void addUser() {
-		// TODO Auto-generated method stub
+	public void addUser(YelpUser c) {
+		UserList.add(c);
 		
 	}
 
 	@Override
-	public void addRestaurant() {
-		// TODO Auto-generated method stub
+	public void addRestaurant(Restaurant c) {
+	RestaurantList.add(c);
 		
 	}
 
 	@Override
-	public void addReview() {
-		// TODO Auto-generated method stub
+	public void addReview(YelpReview c) {
+		ReviewList.add(c);
 		
 	}
 
 	@Override
-	public void removeUser() {
-		// TODO Auto-generated method stub
+	public void removeUser(YelpUser c) {
+		UserList.remove(c);
 		
 	}
 
 	@Override
-	public void removeRestaurant() {
-		// TODO Auto-generated method stub
-		
+	public void removeRestaurant(Restaurant c) {
+		RestaurantList.remove(c);
 	}
 
 	@Override
-	public void removeReview() {
-		// TODO Auto-generated method stub
+	public void removeReview(YelpReview c) {
+		ReviewList.remove(c);
 		
 	}
 
