@@ -45,6 +45,39 @@ public class YelpReview extends Review {
 
 }
 	
+	public YelpReview(String f , String s) {
+		super(f, s);
+		JSONParser parser = new JSONParser();
+		Scanner Sc= new Scanner(s);
+		while(Sc.hasNextLine()) {
+			Object obj;
+			try {
+				obj = parser.parse(Sc.nextLine());
+				JSONObject jsonObject = (JSONObject) obj;
+				business_id= (String) jsonObject.get("business_id");
+				if(jsonObject.containsKey("votes")) {
+					votes=(Map<String, Long>) (jsonObject.get("votes"));
+				}
+				
+				if(jsonObject.containsKey("stars")) {
+				stars= (Long) jsonObject.get("stars");
+				}
+				else {
+					stars=(long) 5;
+				}
+				
+				user_id= (String) jsonObject.get("user_id");
+				
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	}
+	Sc.close();
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -81,6 +114,21 @@ public class YelpReview extends Review {
 	}
 	public void setStars(Long s) {
 		this.stars = s;
+	}
+	
+	public String getJSONString() {
+		JSONObject obj = new JSONObject();
+	
+		 obj.put("user_id", this.getUserid());
+		 obj.put("votes", this.getVotes());
+		 obj.put("type", this.getType());
+		 obj.put("stars", this.getStars());
+		 obj.put("business_id", this.getBusinessid());
+		 obj.put("review_id", this.getReview_id());
+		 obj.put("text", this.getText());
+		 obj.put("date", this.getText());
+		 
+		 return obj.toJSONString();
 	}
 
 }

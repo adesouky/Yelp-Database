@@ -40,6 +40,13 @@ public class YelpUser extends User{
 	Sc.close();
 }
 	
+	public YelpUser(String New, String s) {
+		super(New, s);
+		review_count=(long) 0;
+		type= "user";
+		average_stars=0;
+	}
+	
 	
 	public Map<String, Long> getVotes(){
 		return new HashMap<String, Long>( votes);
@@ -71,4 +78,17 @@ public class YelpUser extends User{
 	public void setAverage_stars(double n) {
 		average_stars=n;
 	}
+	public String getUserJSONString() {
+		 JSONObject obj = new JSONObject();
+		 obj.put("name", this.getName());
+		 obj.put("url", this.getUrl());
+		 obj.put("user_id", this.getUser_id());
+		 obj.put("review_count", this.getReview_count());
+		 obj.put("votes", this.getVotes());
+		 obj.put("type", this.getType());
+		 obj.put("average_stars", this.getAverage_stars());
+		 
+		 return obj.toJSONString();
+	}
+	
 }

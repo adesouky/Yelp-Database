@@ -1,6 +1,8 @@
 package ca.ece.ubc.cpen221.mp5.Classes;
 
+import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,6 +34,39 @@ public class User {
 			}
 	}
 	Sc.close();
+	}
+	
+	public User(String New, String s) {
+		JSONParser parser = new JSONParser();
+		
+		Scanner Sc= new Scanner(s);
+		while(Sc.hasNextLine()) {
+		
+			Object obj;
+			try {
+				obj = parser.parse(Sc.nextLine());
+				JSONObject jsonObject = (JSONObject) obj;
+				name = (String) jsonObject.get("name");
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	Sc.close();
+		
+			
+			
+			StringBuilder Userid = new StringBuilder();
+			for(int i=0; i<12; i++) {
+				Random r = new Random();
+				String Userid1 = UUID.randomUUID().toString();
+				Userid.append(Userid1.charAt(r.nextInt(Userid1.length()-1)));
+			}
+			user_id = Userid.toString();
+			url = "http://www.yelp.com/user_details?userid=" + user_id ;
+	
+	
 	}
 	
 	

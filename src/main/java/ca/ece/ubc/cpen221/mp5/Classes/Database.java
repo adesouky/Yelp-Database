@@ -50,10 +50,22 @@ public class Database implements YelpMP5DB{
 		List<YelpReview> FilteredReviewList =  Arrays.asList(FilteredReview);
 		return FilteredReviewList;
 	}
+	public String getRestaurantJsonString(String BusinessID) throws RestaurantNotFoundException {
+		try {
+		Restaurant[] ab = RestaurantList.stream().filter(x -> x.getBusinessid().equals(BusinessID)).toArray(Restaurant[] :: new);
+		Restaurant a= ab[0];
+		return a.getJSONString();
+		}
+		catch(Exception ex) {
+			throw new RestaurantNotFoundException();
+		}
+	}
 	public Restaurant getRestaurant(String BusinessID) {
+		
 		Restaurant[] ab = RestaurantList.stream().filter(x -> x.getBusinessid().equals(BusinessID)).toArray(Restaurant[] :: new);
 		Restaurant a= ab[0];
 		return a;
+		
 	}
 
 	@Override
@@ -84,8 +96,11 @@ public class Database implements YelpMP5DB{
 		double a = Variables.get(0);
 		double b = Variables.get(1);
 		double r_squared = Variables.get(2);
+		ToDoubleBiFunction<MP5Db<Restaurant>, String> i;
+	
+	
+			i = (x,y) -> ((b*((Database) x).getRestaurant(y).getPrice() +a) < 1) ? 1 : ((b*((Database) x).getRestaurant(y).getPrice() +a) >5) ? 5 : ((b*((Database) x).getRestaurant(y).getPrice() +a));
 		
-		ToDoubleBiFunction<MP5Db<Restaurant>, String> i = (x,y) -> ((b*((Database) x).getRestaurant(y).getPrice() +a) < 1) ? 1 : ((b*((Database) x).getRestaurant(y).getPrice() +a) >5) ? 5 : ((b*((Database) x).getRestaurant(y).getPrice() +a));
 		
 		return i;
 		
@@ -118,7 +133,6 @@ public class Database implements YelpMP5DB{
 	@Override
 	public void addUser(YelpUser c) {
 		UserList.add(c);
-		
 	}
 
 	@Override
@@ -157,7 +171,9 @@ public class Database implements YelpMP5DB{
 		List<String> RestaurantsReviewedID =  Arrays.asList(Reviews.stream().map(a -> a.getBusinessid()).toArray(String[]:: new));
 		List<Restaurant> RestaurantsReviewed = new ArrayList<>();
 		for(String s: RestaurantsReviewedID) {
-			RestaurantsReviewed.add(getRestaurant(s));
+			
+				RestaurantsReviewed.add(getRestaurant(s));
+			
 		}
 		if(Reviews.size() <= 1) {
 			throw new IllegalArgumentException();

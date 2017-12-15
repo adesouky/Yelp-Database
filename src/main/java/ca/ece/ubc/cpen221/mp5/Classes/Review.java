@@ -40,6 +40,40 @@ public class Review {
 		
 		
 	}
+	public Review(String v, String s) {
+JSONParser parser = new JSONParser();
+		
+		Scanner Sc= new Scanner(s);
+	while(Sc.hasNextLine()) {
+		
+			Object obj;
+			try {
+				obj = parser.parse(Sc.nextLine());
+				JSONObject jsonObject = (JSONObject) obj;
+				text= (String) jsonObject.get("text");
+				date= (String) jsonObject.get("date");
+				
+				
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	}
+	
+	Sc.close();
+	
+/////GENERATING A UNIQUE REVIEWID
+	StringBuilder Reviewid = new StringBuilder();
+	for(int i=0; i<12; i++) {
+		Random r = new Random();
+		String Reviewid1 = UUID.randomUUID().toString();
+		Reviewid.append(Reviewid1.charAt(r.nextInt(Reviewid1.length()-1)));
+	}
+	review_id = Reviewid.toString();
+	
+	}
 	
 	public String getText() {
 		return new String(text);

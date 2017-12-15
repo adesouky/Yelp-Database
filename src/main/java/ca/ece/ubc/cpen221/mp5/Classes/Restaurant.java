@@ -23,69 +23,193 @@ public class Restaurant extends ReviewableObject {
 	//private String photo_url;
 	private List<String> schools= new ArrayList<>();
 	private double latitude;
+	private String JsonString;
 	//private Long price;
 	
 	
-	public Restaurant(String s){
+//	public Restaurant(String s){
+//		super(s);
+//		JSONParser parser = new JSONParser();
+//		
+//			Scanner Sc= new Scanner(s);
+//		while(Sc.hasNextLine()) {
+//			try {
+//			Object obj = parser.parse(Sc.nextLine());
+//			
+//			JSONObject jsonObject = (JSONObject) obj;
+//			JsonString = jsonObject.toJSONString();
+//			
+//			open = (boolean) jsonObject.get("open");
+//			  		
+//			
+//					
+//			longitude = (double) jsonObject.get("longitude");
+//					
+//			JSONArray neighborhoodsArray= (JSONArray) jsonObject.get("neighborhoods");
+//			Iterator it = neighborhoodsArray.iterator();
+//			while(it.hasNext()) {
+//			neighborhoods.add(it.next().toString());
+//			}
+//					
+//			business_id = (String) jsonObject.get("business_id") ;
+//					
+//			
+//					
+//			JSONArray categoriesArray= (JSONArray) jsonObject.get("categories");
+//			Iterator itc = categoriesArray.iterator();
+//			while(itc.hasNext()) {
+//			categories.add(itc.next().toString());
+//			}
+//					
+//			state = (String) jsonObject.get("state") ;
+//					
+//			type = (String) jsonObject.get("type") ;
+//					
+//			stars = (double) jsonObject.get("stars") ;
+//					
+//			city = (String) jsonObject.get("city") ;
+//					
+//			full_address = (String) jsonObject.get("full_address") ;
+//					
+//			
+//					
+//			JSONArray schoolsArray= (JSONArray) jsonObject.get("schools");
+//			Iterator its = schoolsArray.iterator();
+//			while(its.hasNext()) {
+//			schools.add(its.next().toString());
+//			}
+//					
+//			latitude = (double) jsonObject.get("latitude");
+//					
+//			}
+//			
+//			 catch ( ParseException e) {
+//				e.printStackTrace();
+//			 }
+//			
+//		}
+//		Sc.close();	
+//	}
+	
+	public Restaurant( String s) {
 		super(s);
+		
 		JSONParser parser = new JSONParser();
 		
-			Scanner Sc= new Scanner(s);
-		while(Sc.hasNextLine()) {
-			try {
-			Object obj = parser.parse(Sc.nextLine());
-			JSONObject jsonObject = (JSONObject) obj;
-			open = (boolean) jsonObject.get("open");
-			  		
-			
-					
-			longitude = (double) jsonObject.get("longitude");
-					
-			JSONArray neighborhoodsArray= (JSONArray) jsonObject.get("neighborhoods");
-			Iterator it = neighborhoodsArray.iterator();
-			while(it.hasNext()) {
-			neighborhoods.add(it.next().toString());
-			}
-					
-			business_id = (String) jsonObject.get("business_id") ;
-					
-			
-					
-			JSONArray categoriesArray= (JSONArray) jsonObject.get("categories");
-			Iterator itc = categoriesArray.iterator();
-			while(itc.hasNext()) {
-			categories.add(itc.next().toString());
-			}
-					
-			state = (String) jsonObject.get("state") ;
-					
-			type = (String) jsonObject.get("type") ;
-					
-			stars = (double) jsonObject.get("stars") ;
-					
-			city = (String) jsonObject.get("city") ;
-					
-			full_address = (String) jsonObject.get("full_address") ;
-					
-			
-					
-			JSONArray schoolsArray= (JSONArray) jsonObject.get("schools");
-			Iterator its = schoolsArray.iterator();
-			while(its.hasNext()) {
-			schools.add(its.next().toString());
-			}
-					
-			latitude = (double) jsonObject.get("latitude");
-					
-			}
-			
-			 catch ( ParseException e) {
-				e.printStackTrace();
-			 }
-			
+		Scanner Sc= new Scanner(s);
+	while(Sc.hasNextLine()) {
+		try {
+		Object obj = parser.parse(Sc.nextLine());
+		
+		JSONObject jsonObject = (JSONObject) obj;
+		
+		
+		longitude = (double) jsonObject.get("longitude");
+		latitude = (double) jsonObject.get("latitude");
+		
+
+		if(jsonObject.containsKey("open")) {
+		open = (boolean) jsonObject.get("open");
 		}
-		Sc.close();	
+		else {
+			open= true;
+		}
+		
+				
+		if(jsonObject.containsKey("neighborhoods")) {
+		JSONArray neighborhoodsArray= (JSONArray) jsonObject.get("neighborhoods");
+		Iterator it = neighborhoodsArray.iterator();
+		while(it.hasNext()) {
+		neighborhoods.add(it.next().toString());
+		}
+		}
+		else {
+			neighborhoods= new ArrayList<>();
+		}
+				
+		
+		
+		if(jsonObject.containsKey("business_id")) {
+		business_id = (String) jsonObject.get("business_id") ;
+		}
+		else {
+			StringBuilder Businessid = new StringBuilder();
+			for(int i=0; i<12; i++) {
+				Random r = new Random();
+				String Businessid1 = UUID.randomUUID().toString();
+				Businessid.append(Businessid1.charAt(r.nextInt(Businessid1.length()-1)));
+			}
+			business_id = Businessid.toString();
+		}
+			
+		if(jsonObject.containsKey("categories")) {
+		JSONArray categoriesArray= (JSONArray) jsonObject.get("categories");
+		Iterator itc = categoriesArray.iterator();
+		while(itc.hasNext()) {
+		categories.add(itc.next().toString());
+		}
+		}
+		else {
+			categories= new ArrayList<>();
+		}
+		
+		if(jsonObject.containsKey("state")) {
+		state = (String) jsonObject.get("state") ;
+		}
+		else { state = "unknown" ;
+		}
+				
+		if(jsonObject.containsKey("type")) {
+		type = (String) jsonObject.get("type") ;
+		}
+		else {
+			type= "business";
+		}
+				
+		if(jsonObject.containsKey("stars")) {
+		stars = (double) jsonObject.get("stars") ;
+		}
+		else {
+			stars = 5;
+		}
+		
+		if(jsonObject.containsKey("city")) {
+		city = (String) jsonObject.get("city") ;
+		}
+		else {
+			city= "unknown";
+		}
+		if(jsonObject.containsKey("full_address")) {
+		full_address = (String) jsonObject.get("full_address") ;
+		}
+		else {
+			full_address= "unkown";
+		}
+				
+		
+		if(jsonObject.containsKey("schools")) {
+		JSONArray schoolsArray= (JSONArray) jsonObject.get("schools");
+		Iterator its = schoolsArray.iterator();
+		while(its.hasNext()) {
+		schools.add(its.next().toString());
+		}
+		}
+		else {
+			schools= new ArrayList<>();
+		}
+				
+		
+				
+		}
+		
+		 catch ( ParseException e) {
+			e.printStackTrace();
+		 }
+		
 	}
+	Sc.close();	
+}
+	
 	
 	public boolean isOpen() {
 		boolean result = open;
@@ -192,4 +316,28 @@ public class Restaurant extends ReviewableObject {
 	public boolean isNearSchool(String s) {
 		return schools.contains(s);
 	}
+	public String getJSONString() {
+		 JSONObject obj = new JSONObject();
+		 obj.put("name", this.getName());
+		 obj.put("url", this.getUrl());
+		 obj.put("business_id", this.getBusinessid());
+		 obj.put("categories", this.getCategories());
+		 obj.put("city", this.getCity());
+		 obj.put("type", this.getType());
+		 obj.put("stars", this.getStars());
+		 obj.put("neighborhoods", this.getNeighborhoods());
+		 obj.put("full_address", this.getFull_address());
+		 obj.put("latitude", this.getLatitude());
+		 obj.put("longitude", this.getLongitude());
+		 obj.put("photo_url", this.getPhoto_url());
+		 obj.put("price", this.getPrice());
+		 obj.put("review_count", this.getReviewCount());
+		 obj.put("schools", this.getSchools());
+		 obj.put("state", this.getState());
+		 
+		 return obj.toJSONString();
+	}
 }
+	
+	
+
