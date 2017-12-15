@@ -111,7 +111,11 @@ public class Database implements YelpMP5DB{
 	public List<YelpReview> getReviews(){
 		return new ArrayList<>(ReviewList);
 	}
-
+	
+	public YelpUser getUser(String Userid) {
+		YelpUser[] UserArray = UserList.stream().filter(x -> x.getUser_id().equals(Userid)).toArray(YelpUser[] :: new);
+		return UserArray[0];
+	}
 	@Override
 	public List<YelpUser> lookupReviews(Long UserId) {
 		// TODO Auto-generated method stub
@@ -140,7 +144,7 @@ public class Database implements YelpMP5DB{
 	RestaurantList.add(c);
 		
 	}
-
+	
 	@Override
 	public void addReview(YelpReview c) {
 		ReviewList.add(c);

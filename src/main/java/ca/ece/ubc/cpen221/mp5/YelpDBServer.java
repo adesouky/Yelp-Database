@@ -96,6 +96,20 @@ public class YelpDBServer {
 	private synchronized String addReview(String s) {
 		YelpReview Review = new YelpReview("new", s);
 		YelpDB.addReview(Review);
+		Restaurant ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
+		///Updating Review Count
+		ReviewedRest.setReviewCount(ReviewedRest.getReviewCount()+1);
+		//Updating Stars
+		double UpdatedStars = (ReviewedRest.getStars()*(ReviewedRest.getReviewCount()-1) + Review.getStars())/ReviewedRest.getReviewCount();
+		//rounding to the nearest .5
+		ReviewedRest.setStars(Math.round(UpdatedStars * 2) / 2.0);
+		
+		YelpUser ReviewingUser= YelpDB.getUser(Review.getUserid());
+		///Updating Review Count
+		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
+		//Updating Stars
+		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
+		
 		return Review.getJSONString();
 	}
 	private synchronized String addRestaurant(String s) {
