@@ -25,8 +25,8 @@ public class Server {
 				System.out.println(st.nextToken("").trim());
 //				try {
 					//Database YELPDB = new Database("data/restaurants.json", "data/reviews.json" , "data/users.json");
-					String v = YELPDB.getUser("3417473bc874").getUserJSONString();
-					System.out.println(v);
+					//String v = YELPDB.getUser("3417473bc874").getUserJSONString();
+				//	System.out.println(v);
 //				} catch (FileNotFoundException e) {
 //					// TODO Auto-generated catch block
 //					e.printStackTrace();
@@ -47,9 +47,7 @@ public class Server {
 			System.out.println(R.getJSONString());
 		}
 
-		for(int i=0 ; i ==i ; i++) {
-			i++;
-		}
+		
 	}
 	
 	
