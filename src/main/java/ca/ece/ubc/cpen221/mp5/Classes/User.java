@@ -36,7 +36,7 @@ public class User {
 	Sc.close();
 	}
 	
-	public User(String New, String s) {
+	public User(boolean new1, String s) {
 		JSONParser parser = new JSONParser();
 		
 		Scanner Sc= new Scanner(s);

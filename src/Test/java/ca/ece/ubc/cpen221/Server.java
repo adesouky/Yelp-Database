@@ -1,10 +1,19 @@
 package ca.ece.ubc.cpen221;
 
+import java.io.FileNotFoundException;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.junit.Test;
 
+import ca.ece.ubc.cpen221.mp5.Classes.Database;
+import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
+import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryParser.OrExprContext;
+import ca.ece.ubc.cpen221.mp5.QueryClasses.Query;
+import ca.ece.ubc.cpen221.mp5.QueryClasses.QueryListener;
+
 public class Server {
+	private Database YELPDB = new Database("data/restaurants.json", "data/reviews.json" , "data/users.json");
 
 	
 	
@@ -14,7 +23,39 @@ public class Server {
 				StringTokenizer st = new StringTokenizer(s, " ");
 				System.out.println(st.nextToken());
 				System.out.println(st.nextToken("").trim());
+//				try {
+					//Database YELPDB = new Database("data/restaurants.json", "data/reviews.json" , "data/users.json");
+					String v = YELPDB.getUser("3417473bc874").getUserJSONString();
+					System.out.println(v);
+//				} catch (FileNotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				
 				//System.out.println(st.nextToken());
 	
+	}
+	
+	@Test 
+	public void test2() {
+		
+		Query A = new Query("in(Telegraph Ave)", YELPDB);
+		
+		Set<Restaurant> SetR = A.getRestaurants();
+		System.out.println(SetR.size());
+		for(Restaurant R : SetR) {
+			System.out.println(R.getJSONString());
+		}
+
+		for(int i=0 ; i ==i ; i++) {
+			i++;
+		}
+	}
+	
+	
+	@Test
+	public void test3() {
+	//	String a= QueryListener.getEnclosed("in(Terminal Ave)");
+		//System.out.println(a);
 	}
 }

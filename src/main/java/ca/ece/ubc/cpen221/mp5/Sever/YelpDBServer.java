@@ -1,4 +1,4 @@
-package ca.ece.ubc.cpen221.mp5;
+package ca.ece.ubc.cpen221.mp5.Sever;
 
 
 
@@ -66,6 +66,9 @@ public class YelpDBServer {
 					try {
 						try {
 								handle(socket);	
+						} catch (RestaurantNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						} finally {
 							socket.close();
 						}
@@ -89,7 +92,8 @@ public class YelpDBServer {
 	}
 	
 	private synchronized String addUser(String s) {
-		YelpUser user = new YelpUser("new", s);
+		YelpUser user = new YelpUser(true, s);
+	//	System.out.println(user.getUserJSONString());
 		YelpDB.addUser(user);
 		return user.getUserJSONString();
 	}
@@ -183,19 +187,19 @@ public class YelpDBServer {
 			in.close();
 		}
 	}
-
-
-
-	/**
-	 * Start a FibonacciServerMulti running on the default port.
-	 * @throws RestaurantNotFoundException 
-	 */
-	public static void main(String[] args) throws RestaurantNotFoundException {
+	
+	public static void main(String[] args) {
 		try {
-			YelpDBServer server = new YelpDBServer(YELP_PORT ,"data/restaurants.json", "data/reviews.json" , "data/users.json");
+			YelpDBServer server = new YelpDBServer(YELP_PORT, "data/restaurants.json", "data/reviews.json" , "data/users.json");
 			server.serve();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (RestaurantNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 }
+
+
+

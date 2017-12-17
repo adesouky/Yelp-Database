@@ -1,4 +1,4 @@
-package ca.ece.ubc.cpen221.mp5;
+package ca.ece.ubc.cpen221.mp5.Classes;
 
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;;

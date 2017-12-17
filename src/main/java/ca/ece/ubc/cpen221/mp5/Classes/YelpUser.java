@@ -28,7 +28,7 @@ public class YelpUser extends User{
 				review_count = (Long) jsonObject.get(review_count);
 				type = (String) jsonObject.get("type");
 				average_stars = (double) jsonObject.get("average_stars");
-				
+
 				
 				
 			} catch (ParseException e) {
@@ -40,16 +40,20 @@ public class YelpUser extends User{
 	Sc.close();
 }
 	
-	public YelpUser(String New, String s) {
+	public YelpUser(boolean New, String s) {
 		super(New, s);
 		review_count=(long) 0;
 		type= "user";
 		average_stars=0;
+		votes.put("funny", (long) 0);
+		votes.put("useful", (long) 0);
+		votes.put("cool", (long) 0);
+
 	}
 	
 	
 	public Map<String, Long> getVotes(){
-		return new HashMap<String, Long>( votes);
+		return new HashMap<String, Long>(votes);
 	}
 	
 	public void addVote(String s) {

@@ -45,6 +45,7 @@ public class YelpReview extends Review {
 
 }
 	
+	
 	public YelpReview(String f , String s) {
 		super(f, s);
 		JSONParser parser = new JSONParser();

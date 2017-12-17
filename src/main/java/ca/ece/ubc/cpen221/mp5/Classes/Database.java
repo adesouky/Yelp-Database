@@ -7,9 +7,9 @@ import java.util.function.ToDoubleBiFunction;
 
 
 
-import ca.ece.ubc.cpen221.mp5.MP5Db;
+import ca.ece.ubc.cpen221.mp5.Classes.MP5Db;
 
-import ca.ece.ubc.cpen221.mp5.kMeansClustering;
+import ca.ece.ubc.cpen221.mp5.Kmeans.kMeansClustering;
 
 
 public class Database implements YelpMP5DB{
@@ -18,12 +18,12 @@ public class Database implements YelpMP5DB{
 	List<Restaurant> RestaurantList = new ArrayList<>();
 	List<YelpReview> ReviewList=new ArrayList<>();
 	
-	public Database(String File1, String File2, String File3) throws FileNotFoundException{
+	public Database(String File1, String File2, String File3) /*throws FileNotFoundException*/{
 		File File11 = new File(File1);
 		File File22 = new File(File2);
 		File File33 = new File(File3);
 		
-		
+	try {	
 		Scanner RestaurantSc= new Scanner(File11);
 		while(RestaurantSc.hasNextLine()) {
 			RestaurantList.add(new Restaurant(RestaurantSc.nextLine()));
@@ -42,6 +42,11 @@ public class Database implements YelpMP5DB{
 			UserList.add( new YelpUser(UserSc.nextLine()));
 		}
 		UserSc.close();
+	}
+	catch(FileNotFoundException ex) {
+		
+	}
+	
 	}
 
 	

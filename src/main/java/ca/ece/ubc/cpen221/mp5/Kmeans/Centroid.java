@@ -1,4 +1,4 @@
-package ca.ece.ubc.cpen221.mp5;
+package ca.ece.ubc.cpen221.mp5.Kmeans;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
