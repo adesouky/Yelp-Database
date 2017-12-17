@@ -20,47 +20,36 @@ public class QueryListener extends YelpQueryBaseListener {
 	@Override
 	public void exitIn(InContext ctx) {
 		List<ParseTree> Children = ctx.children;
-		String Bracketed= ctx.getText();
+		List<String> Bracketed = new ArrayList<>();
+		for(ParseTree p : ctx.children) {
+			Bracketed.add(p.toString());
+			
+		}
+		//String Bracketed= ctx.getText();
+	
 
-	//String Bracketed= "" ;
-		int i;
-		
-		i = ctx.children.indexOf("(");
-		int j= ctx.children.indexOf(")");
-		for(int f=i+1 ; f<j; f++) {
-			Bracketed+=ctx.children.get(f);
-			Bracketed+= " ";
-	}
-//		System.out.println(Bracketed);
-//		
-////		for(i=0 ; i< ctx.getText().length(); i++) {
-////			if(Character.toString(ctx.getText().charAt(i)).equals("(")) {
-////				i++;
-////				break;
-//			}
-//			else {
-//				i++;
-//			}
-//		}
-//		while(!Character.toString(ctx.getText().charAt(i)).equals(")")){
-//			
-//		}
 		InOp In = new InOp(getEnclosed(Bracketed));
 		stack.push(In);
 	}
 	@Override
 	public void exitCategory (CategoryContext ctx) {
 		List<ParseTree> Children = ctx.children;
-		String Bracketed= ctx.getText();
-
+		List<String> Bracketed = new ArrayList<>();
+		for(ParseTree p : ctx.children) {
+			Bracketed.add(p.toString());
+			
+		}
 		CategoryOp Category = new CategoryOp(getEnclosed(Bracketed));
 		stack.push(Category);
 	}
 	@Override
 	public void exitName (NameContext ctx) {
 		List<ParseTree> Children = ctx.children;
-		String Bracketed= ctx.getText();
-
+		List<String> Bracketed = new ArrayList<>();
+		for(ParseTree p : ctx.children) {
+			Bracketed.add(p.toString());
+			
+		}
 		NameOp Name = new NameOp(getEnclosed(Bracketed));
 		stack.push(Name);
 	}
@@ -133,30 +122,44 @@ public class QueryListener extends YelpQueryBaseListener {
 //	}
 	
 
-	public  String getEnclosed(String Terminal) {
-		StringBuilder str = new StringBuilder();
-		System.out.println("Terminal" +Terminal);
-		int i=0;
-		char[] TerminalArray = Terminal.toCharArray();
-		for(char c : TerminalArray) {
-			if (Character.toString(c).equals("(")) {
-				i++;
-				System.out.println("a");
-
-				break;
-			}
-			else {
-				i++;
-			}
+	public  String getEnclosed(List<String> ChildrenString) {
+		
+		
+		String Bracketed= "" ;
+			int i;
 			
+			i = ChildrenString.indexOf("(");
+			int j= ChildrenString.indexOf(")");
+			for(int f=i+1 ; f<j; f++) {
+				Bracketed+=ChildrenString.get(f).toString();
+				Bracketed+= " ";
 		}
+			return Bracketed;
 		
-		while(!(Character.toString(TerminalArray[i]).equals(")"))) {
-			str.append(TerminalArray[i]);
-			i++;
-		}
 		
-		return str.toString();
+//		StringBuilder str = new StringBuilder();
+//		System.out.println("Terminal" +Terminal);
+//		int i=0;
+//		char[] TerminalArray = Terminal.toCharArray();
+//		for(char c : TerminalArray) {
+//			if (Character.toString(c).equals("(")) {
+//				i++;
+//				System.out.println("a");
+//
+//				break;
+//			}
+//			else {
+//				i++;
+//			}
+//			
+//		}
+//		
+//		while(!(Character.toString(TerminalArray[i]).equals(")"))) {
+//			str.append(TerminalArray[i]);
+//			i++;
+//		}
+//		
+//		return str.toString();
 
 	}
 	

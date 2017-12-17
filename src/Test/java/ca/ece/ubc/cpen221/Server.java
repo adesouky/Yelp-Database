@@ -39,7 +39,7 @@ public class Server {
 	@Test 
 	public void test2() {
 		
-		Query A = new Query("in(Telegraph Ave)", YELPDB);
+		Query A = new Query("in(Telegraph Ave) && (category(Chinese) || category(Italian)) && price <= 2", YELPDB);
 		
 		Set<Restaurant> SetR = A.getRestaurants();
 		System.out.println(SetR.size());
