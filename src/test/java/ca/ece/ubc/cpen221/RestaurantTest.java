@@ -32,11 +32,11 @@ public class RestaurantTest {
 		
 		double latitude = 5.2;
 		double longitude = 4.3;
-		rest1.setLatitude((long) latitude);
+		rest1.setLatitude( latitude);
 		rest1.setLongitude(longitude);
 		
 		
-		assertEquals(latitude, rest1.getLatitude(), 0.0001);
+		assertEquals(latitude, rest1.getLatitude(), 0.001);
 		assertEquals(longitude, rest1.getLongitude(), 0.0001);
 
 		db.addRestaurant(rest1);

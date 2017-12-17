@@ -11,8 +11,8 @@ import java.util.function.ToDoubleBiFunction;
 
 import org.junit.Test;
 
-import ca.ece.ubc.cpen221.mp5.Centroid;
-import ca.ece.ubc.cpen221.mp5.MP5Db;
+import ca.ece.ubc.cpen221.mp5.Kmeans.Centroid;
+import ca.ece.ubc.cpen221.mp5.Classes.MP5Db;
 import ca.ece.ubc.cpen221.mp5.Classes.*;
 
 public class PredictorTest {
@@ -29,7 +29,7 @@ public class PredictorTest {
 	@Test
 	public void Test2() throws FileNotFoundException {
 		Database x= new Database("data/restaurants.json", "data/reviews.json" , "data/users.json");
-		int k=25;
+		int k=15;
 		System.out.println(x.kMeansClusters_json(k));
 		Map<Centroid, Set<Restaurant>> restaurantMap = x.kMeansClusters_Map(k);
 		//System.out.println(restaurantMap.size());

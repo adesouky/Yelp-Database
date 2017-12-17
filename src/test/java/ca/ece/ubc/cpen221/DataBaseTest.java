@@ -43,8 +43,6 @@ public class DataBaseTest {
 		Restaurant rest1 = new Restaurant("Starbucks");
 
 		
-		db.addRestaurant(rest1);
-		db.removeRestaurant(rest1);
 		
 		assertEquals(false, db.getRestaurants().contains(rest1));
 	}
