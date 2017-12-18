@@ -40,7 +40,7 @@ public class YelpUser extends User{
 	Sc.close();
 }
 	
-	public YelpUser(boolean New, String s) {
+	public YelpUser(boolean New, String s) throws Exception {
 		super(New, s);
 		review_count=(long) 0;
 		type= "user";

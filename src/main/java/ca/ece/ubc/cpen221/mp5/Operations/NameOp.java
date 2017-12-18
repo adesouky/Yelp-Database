@@ -19,7 +19,7 @@ public class NameOp implements Operation{
 	@Override
 	public Set<Restaurant> eval(Database YelpDB) {
 		List<Restaurant> RestaurantList= YelpDB.getRestaurants();
-		Restaurant[] rest= RestaurantList.stream().filter(a -> a.getName().equals(Name)).toArray(Restaurant[] :: new);
+		Restaurant[] rest= RestaurantList.stream().filter(a -> a.getName().contains(Name)).toArray(Restaurant[] :: new);
 		Set<Restaurant> RestaurantSet= new HashSet<>();
 		RestaurantSet.addAll(Arrays.asList(rest));
 		return new HashSet<>(RestaurantSet);

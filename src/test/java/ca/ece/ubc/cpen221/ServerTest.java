@@ -36,9 +36,9 @@ public class ServerTest {
 	}
 	
 	@Test 
-	public void test2() {
+	public void test2() throws Exception {
 		
-		Query A = new Query("in(Telegraph Ave) && (category(Chinese) || category(Italian)) && price <= 2", YELPDB);
+		Query A = new Query("in-(Telegraph Ave) && (category(Chinese) || category(Italian)) && price <= 2", YELPDB);
 		
 		Set<Restaurant> SetR = A.getRestaurants();
 		System.out.println(SetR.size());

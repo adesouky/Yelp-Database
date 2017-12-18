@@ -33,10 +33,11 @@ public class User {
 				e.printStackTrace();
 			}
 	}
+
 	Sc.close();
 	}
 	
-	public User(boolean new1, String s) {
+	public User(boolean new1, String s) throws Exception {
 		JSONParser parser = new JSONParser();
 		
 		Scanner Sc= new Scanner(s);
@@ -47,6 +48,9 @@ public class User {
 				obj = parser.parse(Sc.nextLine());
 				JSONObject jsonObject = (JSONObject) obj;
 				name = (String) jsonObject.get("name");
+				if(!jsonObject.containsKey("name")) {
+					throw new Exception();
+				}
 			}
 			catch (ParseException e) {
 				// TODO Auto-generated catch block

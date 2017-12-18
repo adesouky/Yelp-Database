@@ -83,7 +83,7 @@ public class FibonacciClient {
         try {
             FibonacciClient client = new FibonacciClient("localhost", YelpDBServer.YELP_PORT);
 
-            client.sendRequest("ADDRESTAURANT {\"name\": \"Mortich W.\"}\n");
+            client.sendRequest("QUERY   in    (Telegraph Ave)");
             String s = client.getReply();
             
             System.out.println(s);

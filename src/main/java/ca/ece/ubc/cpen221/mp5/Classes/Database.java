@@ -10,6 +10,7 @@ import java.util.function.ToDoubleBiFunction;
 import ca.ece.ubc.cpen221.mp5.Classes.MP5Db;
 
 import ca.ece.ubc.cpen221.mp5.Kmeans.kMeansClustering;
+import ca.ece.ubc.cpen221.mp5.QueryClasses.Query;
 
 
 public class Database implements YelpMP5DB{
@@ -75,10 +76,13 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public Set getMatches(String queryString) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = new Query(queryString, this);
+		Set<Restaurant> Restaurants = query.getRestaurants();
+		return Restaurants;
 	}
 
+	
+	
 	@Override
 	public String kMeansClusters_json(int k) {
 		kMeansClustering kc = new kMeansClustering(this);

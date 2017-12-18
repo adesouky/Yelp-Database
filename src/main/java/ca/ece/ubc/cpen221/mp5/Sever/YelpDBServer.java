@@ -6,7 +6,14 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+
+import javax.json.JsonException;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -92,36 +99,83 @@ public class YelpDBServer {
 	}
 	
 	private synchronized String addUser(String s) {
-		YelpUser user = new YelpUser(true, s);
+		
+		if(!isJSONValid(s)) {
+			return ("ERR: INVALID_USER_STRING");
+		}
+		try{
+			YelpUser user = new YelpUser(true, s);
+		
 	//	System.out.println(user.getUserJSONString());
 		YelpDB.addUser(user);
 		return user.getUserJSONString();
+		} 
+		catch(Exception ex) {
+			return ("ERR: INVALID_USER_STRING");
+		}
 	}
+	
 	private synchronized String addReview(String s) {
+		if(!isJSONValid(s)) {
+			return ("ERR: INVALID_REVIEW_STRING");
+		}
 		YelpReview Review = new YelpReview("new", s);
 		YelpDB.addReview(Review);
-		Restaurant ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
-		///Updating Review Count
-		ReviewedRest.setReviewCount(ReviewedRest.getReviewCount()+1);
-		//Updating Stars
-		double UpdatedStars = (ReviewedRest.getStars()*(ReviewedRest.getReviewCount()-1) + Review.getStars())/ReviewedRest.getReviewCount();
-		//rounding to the nearest .5
-		ReviewedRest.setStars(Math.round(UpdatedStars * 2) / 2.0);
+		try {
+			Restaurant ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
+			///Updating Review Count
+			ReviewedRest.setReviewCount(ReviewedRest.getReviewCount()+1);
+			//Updating Stars
+			double UpdatedStars = (ReviewedRest.getStars()*(ReviewedRest.getReviewCount()-1) + Review.getStars())/ReviewedRest.getReviewCount();
+			//rounding to the nearest .5
+			ReviewedRest.setStars(Math.round(UpdatedStars * 2) / 2.0);
+		}
+		catch(Exception ex) {
+			return("ERR: NO_SUCH_RESTAURANT");
+		}
 		
+		try {
 		YelpUser ReviewingUser= YelpDB.getUser(Review.getUserid());
 		///Updating Review Count
 		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
 		//Updating Stars
 		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
+		}
+		catch(Exception ex) {
+			return("ERR: NO_SUCH_USER");
+		}
 		
 		return Review.getJSONString();
 	}
 	private synchronized String addRestaurant(String s) {
+		if(!isJSONValid(s)) {
+			return ("ERR: INVALID_RESTAURANT_STRING");
+		}
 		Restaurant Restaurant = new Restaurant( s);
 		YelpDB.addRestaurant(Restaurant);
 		return Restaurant.getJSONString();
 	}
 	
+	private synchronized List<String>  getResponse(String Query) throws Exception, NoMatchException {
+		List<String> JsonList= new ArrayList<>();
+		Set<Restaurant> Result;
+		try {
+			 Result = YelpDB.getMatches(Query);
+		}
+			catch(Exception ex) {
+				throw new IllegalQueryException();
+			}
+		
+		
+		for(Restaurant R: Result) {
+			JsonList.add(R.getJSONString());
+		}
+		if(Result.size()==0) {
+			throw new NoMatchException();
+		}
+	
+		return JsonList;
+	}
 	/**
 	 * Handle one client connection. Returns when client disconnects.
 	 * 
@@ -170,8 +224,8 @@ public class YelpDBServer {
 					else if(nextToken.equals("ADDREVIEW")) {
 						out.println(addReview(tk.nextToken("").trim()));
 					}
-					else {
-						//////ERRROR
+					else if(nextToken.equals("QUERY")){
+						out.println(getResponse(tk.nextToken("").trim()));
 					}
 					
 					if(tk.hasMoreTokens()) {
@@ -182,6 +236,15 @@ public class YelpDBServer {
 				// not:
 				// out.flush();
 			}
+		}catch(NoMatchException e) {
+			out.println("ERR: NO_MATCH");
+		}
+		catch(IllegalQueryException iex) {
+			out.println("ERR: INVALID_QUERY");
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			out.println("ERR: INVALID_QUERY");
 		} finally {
 			out.close();
 			in.close();
@@ -198,6 +261,32 @@ public class YelpDBServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private boolean isJSONValid(String test) {
+	    try {
+			JSONParser parser = new JSONParser();
+	    		Object obj = parser.parse(test);
+	    		JSONObject jsonObject = (JSONObject) obj;
+	    } catch (JsonException ex) {
+	        // edited, to include @Arthur's comment
+	        // e.g. in case JSONArray is valid as well...
+	        try {
+	        	JSONParser parser = new JSONParser();
+	    		Object obj = parser.parse(test);
+	        	JSONArray a = (JSONArray) obj;
+	        } catch (JsonException ex1) {
+	            return false;
+	        } catch (ParseException e) {
+	            return false;
+			}
+	    } catch (ParseException e) {
+            return false;
+			
+	   
+	}
+
+	    return true;
 	}
 }
 
