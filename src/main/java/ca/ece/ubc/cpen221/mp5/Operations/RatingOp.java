@@ -30,6 +30,7 @@ public class RatingOp implements Operation{
 			//Set<Restaurant> RestaurantSet= new HashSet<>();
 			RestaurantSet.addAll(Arrays.asList(rest));
 		}
+		
 		else if(ineq.equals(">")) {
 			List<Restaurant> RestaurantList= YelpDB.getRestaurants();
 			Restaurant[] rest= RestaurantList.stream().filter(a -> a.getStars()>Number ).toArray(Restaurant[] :: new);

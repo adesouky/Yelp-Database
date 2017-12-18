@@ -80,13 +80,15 @@ public class FibonacciClient {
      * Use a FibonacciServer to find the first N Fibonacci numbers.
      */
     public static void main(String[] args) {
-        try {
+    	 for(int i=0; i< args.length; i++) {    
+    	try {
             FibonacciClient client = new FibonacciClient("localhost", YelpDBServer.YELP_PORT);
-
-            client.sendRequest("QUERY   in    (Telegraph Ave)");
+            
+           
+            client.sendRequest(args[i].toString());
             String s = client.getReply();
             
-            System.out.println(s);
+            System.out.println("QUERY WAS: " + args[i] + " Answer is " + s);
             // send the requests to find the first N Fibonacci numbers
 //            for (int x = 1; x <= N; ++x) {
 //                client.sendRequest(x);
@@ -103,5 +105,6 @@ public class FibonacciClient {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
     }
 }

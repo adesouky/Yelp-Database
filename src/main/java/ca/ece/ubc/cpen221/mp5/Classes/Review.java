@@ -27,6 +27,7 @@ public class Review {
 				text= (String) jsonObject.get("text");
 				date= (String) jsonObject.get("date");
 				
+	
 				
 			}
 			catch (ParseException e) {

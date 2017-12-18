@@ -44,9 +44,10 @@ public class YelpReview extends Review {
 	Sc.close();
 
 }
+
 	
 	
-	public YelpReview(String f , String s) {
+	public YelpReview(String f , String s) throws MissingInputException {
 		super(f, s);
 		JSONParser parser = new JSONParser();
 		Scanner Sc= new Scanner(s);
@@ -59,6 +60,11 @@ public class YelpReview extends Review {
 				if(jsonObject.containsKey("votes")) {
 					votes=(Map<String, Long>) (jsonObject.get("votes"));
 				}
+				else {
+					votes.put("useful", (long) 0);
+					votes.put("funny", (long) 0);
+					votes.put("cool", (long) 0);
+				}
 				
 				if(jsonObject.containsKey("stars")) {
 				stars= (Long) jsonObject.get("stars");
@@ -66,7 +72,13 @@ public class YelpReview extends Review {
 				else {
 					stars=(long) 5;
 				}
-				
+				if(!(jsonObject.containsKey("user_id") &&
+					jsonObject.containsKey("business_id") &&
+					jsonObject.containsKey("text") &&
+					jsonObject.containsKey("date") &&
+					jsonObject.containsKey("stars"))) {
+					throw new MissingInputException();
+				}
 				user_id= (String) jsonObject.get("user_id");
 				
 				
@@ -74,7 +86,7 @@ public class YelpReview extends Review {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	
+			type= "review";
 	}
 	Sc.close();
 	}
@@ -127,7 +139,7 @@ public class YelpReview extends Review {
 		 obj.put("business_id", this.getBusinessid());
 		 obj.put("review_id", this.getReview_id());
 		 obj.put("text", this.getText());
-		 obj.put("date", this.getText());
+		 obj.put("date", this.getDate());
 		 
 		 return obj.toJSONString();
 	}

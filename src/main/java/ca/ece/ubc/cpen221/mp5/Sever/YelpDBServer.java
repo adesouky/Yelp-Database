@@ -94,7 +94,16 @@ public class YelpDBServer {
 	
 	
 	private synchronized String getRestaurant(String businessID) throws RestaurantNotFoundException {
-		String a=YelpDB.getRestaurantJsonString(businessID);
+		String a ="";
+		if(businessID.contains((" "))) {
+			return( "ERR: INVALID_BUSINESSID_STRING ");
+		}
+		try{
+			 a=YelpDB.getRestaurantJsonString(businessID);
+		}
+		catch(Exception ex) {
+			return ("ERR: NO_SUCH_RESTAURANT");
+		}
 		return a;
 	}
 	
@@ -119,7 +128,13 @@ public class YelpDBServer {
 		if(!isJSONValid(s)) {
 			return ("ERR: INVALID_REVIEW_STRING");
 		}
-		YelpReview Review = new YelpReview("new", s);
+		if(!isJSONValid(s)) {
+			return ("ERR: INVALID_REVIEW_STRING");
+		}
+		YelpReview Review;
+		try {
+			Review = new YelpReview("new", s);
+		
 		YelpDB.addReview(Review);
 		try {
 			Restaurant ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
@@ -133,17 +148,30 @@ public class YelpDBServer {
 		catch(Exception ex) {
 			return("ERR: NO_SUCH_RESTAURANT");
 		}
-		
+		YelpUser ReviewingUser;
 		try {
-		YelpUser ReviewingUser= YelpDB.getUser(Review.getUserid());
-		///Updating Review Count
-		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
-		//Updating Stars
-		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
+		ReviewingUser= YelpDB.getUser(Review.getUserid());
 		}
 		catch(Exception ex) {
 			return("ERR: NO_SUCH_USER");
 		}
+		///Updating Review Count
+		try {
+		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
+		//Updating Stars
+		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
+
+		}
+		catch(Exception ex) {
+			System.out.println("alalalala");
+		}
+	
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		return("ERR: INVALID_REVIEW_STRING");
+	}
+		
 		
 		return Review.getJSONString();
 	}
@@ -155,6 +183,7 @@ public class YelpDBServer {
 		YelpDB.addRestaurant(Restaurant);
 		return Restaurant.getJSONString();
 	}
+	
 	
 	private synchronized List<String>  getResponse(String Query) throws Exception, NoMatchException {
 		List<String> JsonList= new ArrayList<>();
@@ -264,6 +293,9 @@ public class YelpDBServer {
 	}
 	
 	private boolean isJSONValid(String test) {
+		try {
+			
+		
 	    try {
 			JSONParser parser = new JSONParser();
 	    		Object obj = parser.parse(test);
@@ -285,6 +317,10 @@ public class YelpDBServer {
 			
 	   
 	}
+		}
+		catch(Exception ex) {
+			return false;
+		}
 
 	    return true;
 	}

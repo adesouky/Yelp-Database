@@ -25,11 +25,12 @@ public class YelpUser extends User{
 				JSONObject jsonObject = (JSONObject) obj;
 				
 				votes = (Map<String, Long>) jsonObject.get("votes");
-				review_count = (Long) jsonObject.get(review_count);
+				review_count = (Long) jsonObject.get("review_count");
 				type = (String) jsonObject.get("type");
 				average_stars = (double) jsonObject.get("average_stars");
 
-				
+		
+			
 				
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
