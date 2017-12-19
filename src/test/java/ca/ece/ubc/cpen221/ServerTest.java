@@ -102,10 +102,17 @@ public class ServerTest {
 				"QUERY in(Telegraph Ave) && rating >= 1",
 				"QUERY in(Telegraph Ave) && rating > 1",
 				"QUERY in(Telegraph Ave) && rating > 4",
+				"QUERY indfdd(Telegraph Ave) && rating > 4",
+				"QUERY in+-(Telegraph Ave) && rating > 4",
+				"QUERY in(Telegraph Ave) + rating > 4",
+
 				"QUERY in(Telegraph Ave) && rating >= 4",
 				"QUERY in(Telegraph Ave) && (category(Chinese) || category(Italian)) && price = 2",
 				"QUERY in(Telegraph Ave) && (category(Chinese) || category(Italian)) && rating = 2",
 				"GETRESTAURANT QQIjsdcokFermi2ugoD6ow" , 
+				"GETRESTAURANT QQIjsdcokF    ermi2ugoD6ow" , 
+				"GETRESTAURANT QQIjs dcokFermi2ugoD6ow" , 
+
 				"GETRESTAURANT XVEYYER" , 
 				"ADDUSER {\"name\": \"Sathish G.\"}", 
 				"ADDUSER {\"nae\": \"Sathish G.\"}", 
@@ -118,9 +125,15 @@ public class ServerTest {
 				"ADDREVIEW {\"business_id\": \"1CBs84C-a-cuA3vncXVSAw\", \"stars\": 4, \"user_id\": \"f_1bRw8RuK-zZAKuUMTqNw\", \"date\": \"2011-02-19\"}\n" ,
 				"ADDREVIEW {\"business_id\": \"1CBs84C-a-csns jsuA3vncXVSAw\",  \"text\": \"If you're on the north side of campus and want a quick lunch and don't want La Burrita, this is the place to go! This place is also good for group dinners too. They sell pizzas by the slice, and have lots of variety. I really like the Athenian slice! The pizzas can take a while to come out though\", \"stars\": 4, \"user_id\": \"f_1bRw8RuK-zZAKuUMTqNw\", \"date\": \"2011-02-19\"}\n" ,
 				"ADDREVIEW {\"business_id\": \"1CBs84C-a-cuA3vncXVSAw\",  \"text\": \"If you're on the north side of campus and want a quick lunch and don't want La Burrita, this is the place to go! This place is also good for group dinners too. They sell pizzas by the slice, and have lots of variety. I really like the Athenian slice! The pizzas can take a while to come out though\", \"stars\": 4, \"user_id\": \"f_1bRw8RuK-zZAsjsjndjKuUMTqNw\", \"date\": \"2011-02-19\"}\n" ,
-
+	//			"ADDRESTAURANT {\"longitude\": -122.2598181, \"neighborhoods\": [\"UC Campus Area\"], \"name\": \"Momo Masala\", \"categories\": [\"Indian\", \"Asian Fusion\", \"Restaurants\"], \"state\": \"CA\", \"city\": \"Berkeley\", \"full_address\": \"2505 Hearst Ave\\nSte B\\nUC Campus Area\\nBerkeley, CA 94709\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8751965}\n" ,
+				"ADDRESTAURANT {\"open\": true, \"url\": \"http://www.yelp.com/biz/la-cascada-taqueria-berkeley\", \"longitude\": -122.2663047, \"neighborhoods\": [\"Downtown Berkeley\", \"UC Campus Area\"], \"business_id\": \"WXKx2I2SEzBpeUGtDMCS8A\", \"name\": \"La Cascada Taqueria\", \"categories\": [\"Mexican\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 3.0, \"city\": \"Berkeley\", \"full_address\": \"2164 Center St\\nDowntown Berkeley\\nBerkeley, CA 94704\", \"review_count\": 101, \"photo_url\": \"http://s3-media3.ak.yelpcdn.com/bphoto/-Nwor_L01Lsm6Mcf36-QCA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8705337, \"price\": 2}\n",
+				"ADDRESTAURANT {\"longitude\": -122.2663047, \"neighborhoods\": [\"Downtown Berkeley\", \"UC Campus Area\"], \"business_id\": \"WXKx2I2SEzBpeUGtDMCS8A\", \"name\": \"La Cascada Taqueria\", \"categories\": [\"Mexican\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 3.0, \"city\": \"Berkeley\", \"full_address\": \"2164 Center St\\nDowntown Berkeley\\nBerkeley, CA 94704\", \"review_count\": 101, \"photo_url\": \"http://s3-media3.ak.yelpcdn.com/bphoto/-Nwor_L01Lsm6Mcf36-QCA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8705337, \"price\": 2}\n",
+				"ADDRESTAURANT {\"neighborhoods\": [\"Downtown Berkeley\", \"UC Campus Area\"], \"business_id\": \"WXKx2I2SEzBpeUGtDMCS8A\", \"name\": \"La Cascada Taqueria\", \"categories\": [\"Mexican\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 3.0, \"city\": \"Berkeley\", \"full_address\": \"2164 Center St\\nDowntown Berkeley\\nBerkeley, CA 94704\", \"review_count\": 101, \"photo_url\": \"http://s3-media3.ak.yelpcdn.com/bphoto/-Nwor_L01Lsm6Mcf36-QCA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8705337, \"price\": 2}\n",
+				"ADDRESTAURANT \"longitude\": -122.2663047, \"neighborhoods\": [\"Downtown Berkeley\", \"UC Campus Area\"], \"business_id\": \"WXKx2I2SEzBpeUGtDMCS8A\", \"name\": \"La Cascada Taqueria\", \"categories\": [\"Mexican\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 3.0, \"city\": \"Berkeley\", \"full_address\": \"2164 Center St\\nDowntown Berkeley\\nBerkeley, CA 94704\", \"review_count\": 101, \"photo_url\": \"http://s3-media3.ak.yelpcdn.com/bphoto/-Nwor_L01Lsm6Mcf36-QCA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8705337, \"price\": 2}\n",
+				"ADDRESTAURANT {\"longitude\": -122.2663047, \"neighborhoods\": [\"Downtown Berkeley\", \"UC Campus Area\"], \"name\": \"La Cascada Taqueria\", \"categories\": [\"Mexican\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 3.0, \"city\": \"Berkeley\", \"full_address\": \"2164 Center St\\nDowntown Berkeley\\nBerkeley, CA 94704\", \"review_count\": 101, \"photo_url\": \"http://s3-media3.ak.yelpcdn.com/bphoto/-Nwor_L01Lsm6Mcf36-QCA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.8705337, \"price\": 2}\n"
 				
 		
+				
 		};
 		
 		

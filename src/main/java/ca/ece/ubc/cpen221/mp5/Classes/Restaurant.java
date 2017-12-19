@@ -9,9 +9,9 @@ public class Restaurant extends ReviewableObject {
 	
 	private boolean open;
 	//private String url;
-	private double longitude;
+	private double longitude; //HAS TO BE INCUDEDED
 	private List<String> neighborhoods = new ArrayList<>();
-	private String business_id;
+	private String business_id; //HAS TO BE INCLUDED
 	//private String name;
 	private List<String> categories = new ArrayList<>();
 	private String state;
@@ -22,7 +22,7 @@ public class Restaurant extends ReviewableObject {
 	//private Long review_count;
 	//private String photo_url;
 	private List<String> schools= new ArrayList<>();
-	private double latitude;
+	private double latitude; //HAS TO BE INCLUDED
 	private String JsonString;
 	//private Long price;
 	
@@ -211,6 +211,35 @@ public class Restaurant extends ReviewableObject {
 }
 	
 	
+	
+	public boolean Validate(String s) throws ParseException {
+
+		JSONParser parser = new JSONParser();
+		
+		
+		Object obj = parser.parse(s);
+		
+		JSONObject jsonObject = (JSONObject) obj;
+		
+		if(!(jsonObject.containsKey("name" )  &&
+			jsonObject.containsKey("longitude") &&
+			jsonObject.containsKey("latitude") &&
+			jsonObject.containsKey("state") &&
+			jsonObject.containsKey("full_address") &&
+			jsonObject.containsKey("city" ) &&
+			jsonObject.containsKey("neighborhoods") &&
+			jsonObject.containsKey("schools") &&
+			jsonObject.containsKey("categories")
+			))
+				{
+			return false;
+				}
+		else {
+			return true;
+		}
+		
+		
+	}
 	public boolean isOpen() {
 		boolean result = open;
 		return result;

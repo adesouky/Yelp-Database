@@ -73,9 +73,6 @@ public class YelpDBServer {
 					try {
 						try {
 								handle(socket);	
-						} catch (RestaurantNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						} finally {
 							socket.close();
 						}
@@ -93,7 +90,7 @@ public class YelpDBServer {
 	}
 	
 	
-	private synchronized String getRestaurant(String businessID) throws RestaurantNotFoundException {
+	private synchronized String getRestaurant(String businessID) {
 		String a ="";
 		if(businessID.contains((" "))) {
 			return( "ERR: INVALID_BUSINESSID_STRING ");
@@ -128,9 +125,7 @@ public class YelpDBServer {
 		if(!isJSONValid(s)) {
 			return ("ERR: INVALID_REVIEW_STRING");
 		}
-		if(!isJSONValid(s)) {
-			return ("ERR: INVALID_REVIEW_STRING");
-		}
+	
 		YelpReview Review;
 		try {
 			Review = new YelpReview("new", s);
@@ -156,15 +151,13 @@ public class YelpDBServer {
 			return("ERR: NO_SUCH_USER");
 		}
 		///Updating Review Count
-		try {
+		
 		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
 		//Updating Stars
 		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
 
-		}
-		catch(Exception ex) {
-			System.out.println("alalalala");
-		}
+		
+		
 	
 		
 	} catch (Exception e) {
@@ -175,13 +168,31 @@ public class YelpDBServer {
 		
 		return Review.getJSONString();
 	}
+	
+
 	private synchronized String addRestaurant(String s) {
-		if(!isJSONValid(s)) {
+		Restaurant Restaurant;
+	try {	if(!isJSONValid(s)) {
 			return ("ERR: INVALID_RESTAURANT_STRING");
 		}
-		Restaurant Restaurant = new Restaurant( s);
+		Restaurant = new Restaurant( s);
+		try{
+			if (!Restaurant.Validate(s)) {
+				return ("ERR: INVALID_RESTAURANT_STRING");
+			}
+		}
+		catch(Exception ex) {
+			return ("ERR: INVALID_RESTAURANT_STRING");
+		}
 		YelpDB.addRestaurant(Restaurant);
+	}
+	catch(Exception ex) {
+		return ("ERR: INVALID_RESTAURANT_STRING");
+	}
+	
 		return Restaurant.getJSONString();
+		
+	
 	}
 	
 	
@@ -214,7 +225,7 @@ public class YelpDBServer {
 	 *             if connection encounters an error
 	 * @throws RestaurantNotFoundException 
 	 */
-	private void handle(Socket socket) throws IOException, RestaurantNotFoundException {
+	private void handle(Socket socket) throws IOException {
 		System.err.println("client connected");
 
 		// get the socket's input stream, and wrap converters around it
@@ -242,13 +253,19 @@ public class YelpDBServer {
 				else{
 					String nextToken= tk.nextToken();
 					if(nextToken.equals("GETRESTAURANT")) {
-						out.println(getRestaurant(tk.nextToken().trim()));
+						out.println(getRestaurant(tk.nextToken("").trim()));
 					}
 					else if( nextToken.equals("ADDUSER")) {
 						out.println(addUser(tk.nextToken("").trim()));
 					}
 					else if( nextToken.equals("ADDRESTAURANT")) {
-						out.println(addRestaurant(tk.nextToken("").trim()));
+					//	out.println(tk.nextToken(""));
+					
+						out.println(
+								addRestaurant(
+										tk.nextToken("").
+										trim()));//addRestaurant(tk.nextToken("").trim());
+					
 					}
 					else if(nextToken.equals("ADDREVIEW")) {
 						out.println(addReview(tk.nextToken("").trim()));
@@ -280,6 +297,7 @@ public class YelpDBServer {
 		}
 	}
 	
+
 	public static void main(String[] args) {
 		try {
 			YelpDBServer server = new YelpDBServer(YELP_PORT, "data/restaurants.json", "data/reviews.json" , "data/users.json");
@@ -300,18 +318,7 @@ public class YelpDBServer {
 			JSONParser parser = new JSONParser();
 	    		Object obj = parser.parse(test);
 	    		JSONObject jsonObject = (JSONObject) obj;
-	    } catch (JsonException ex) {
-	        // edited, to include @Arthur's comment
-	        // e.g. in case JSONArray is valid as well...
-	        try {
-	        	JSONParser parser = new JSONParser();
-	    		Object obj = parser.parse(test);
-	        	JSONArray a = (JSONArray) obj;
-	        } catch (JsonException ex1) {
-	            return false;
-	        } catch (ParseException e) {
-	            return false;
-			}
+	    
 	    } catch (ParseException e) {
             return false;
 			

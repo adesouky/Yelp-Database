@@ -14,10 +14,10 @@ public class ReviewableObject {
 	
 
 	private String url;
-	private String name;
-	private Long review_count;
-	private Long price;
-	private String photo_url;
+	private String name;   //HAS TO BE INCLUDED
+	private Long review_count; 
+	private Long price;	
+	private String photo_url; 
 	
 //	public ReviewableObject(String s) {
 //
@@ -72,18 +72,17 @@ public class ReviewableObject {
 		}
 		
 		StringBuilder Photoid = new StringBuilder();
-		if(jsonObject.containsKey("photo_url")) {
-			photo_url = (String) jsonObject.get("photo_url") ;
-
-		}
-		else {
-		
 		for(int i=0; i<12; i++) {
 			Random r = new Random();
 			String photoid1 = UUID.randomUUID().toString();
 			Photoid.append(photoid1.charAt(r.nextInt(photoid1.length()-1)));
 		}
-	
+		
+		if(jsonObject.containsKey("photo_url")) {
+			photo_url = (String) jsonObject.get("photo_url") ;
+
+		}
+		else {
 		String photo_url= "http://s3-media3.ak.yelpcdn.com/bphoto/" + Photoid.toString() + "/ms.jpg";
 		}
 		
