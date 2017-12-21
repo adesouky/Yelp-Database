@@ -5,6 +5,10 @@ import java.util.*;
 import ca.ece.ubc.cpen221.mp5.Classes.Database;
 import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
 
+/**
+ * Represents an and Expression in a query (e.g "&&" )
+ *
+ */
 public class AndOp implements Operation {
 	private List<Operation> Operations;
 	private boolean ContainsAnd;

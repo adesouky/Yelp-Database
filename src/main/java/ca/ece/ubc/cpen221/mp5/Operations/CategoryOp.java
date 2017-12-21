@@ -8,6 +8,11 @@ import java.util.Set;
 import ca.ece.ubc.cpen221.mp5.Classes.Database;
 import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
 
+
+/**
+ * Represents a category Expression in a query 
+ *
+ */
 public class CategoryOp implements Operation{
 
 	private String Category;

@@ -5,13 +5,10 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.Socket;
 
-import ca.ece.ubc.cpen221.mp5.Sever.YelpDBServer;
+import ca.ece.ubc.cpen221.mp5.YelpDBServer;
 
 /**
- * FibonacciClient is a client that sends requests to the FibonacciServer
- * and interprets its replies.
- * A new FibonacciClient is "open" until the close() method is called,
- * at which point it is "closed" and may not be used further.
+ * USED FORR TESTING ONLY
  */
 public class FibonacciClient {
     private Socket socket;
@@ -80,31 +77,24 @@ public class FibonacciClient {
      * Use a FibonacciServer to find the first N Fibonacci numbers.
      */
     public static void main(String[] args) {
-    	 for(int i=0; i< args.length; i++) {    
+    	  for(int i=0; i< args.length; i++) {   
     	try {
+    		
             FibonacciClient client = new FibonacciClient("localhost", YelpDBServer.YELP_PORT);
             
-           
+          
             client.sendRequest(args[i].toString());
             String s = client.getReply();
             
             System.out.println("QUERY WAS: " + args[i] + " Answer is " + s);
-            // send the requests to find the first N Fibonacci numbers
-//            for (int x = 1; x <= N; ++x) {
-//                client.sendRequest(x);
-//                System.out.println("fibonacci("+x+") = ?");
-//            }
-//            
-//            // collect the replies
-//            for (int x = 1; x <= N; ++x) {
-//                BigInteger y = client.getReply();
-//                System.out.println("fibonacci("+x+") = "+y);
-//            }
             
             client.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    	  }
     }
-    }
+    
+    
+    
 }

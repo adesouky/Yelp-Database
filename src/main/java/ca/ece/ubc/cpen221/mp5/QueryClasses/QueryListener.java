@@ -10,13 +10,25 @@ import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryBaseListener;
 import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryParser.*;
 import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryParser.OrExprContext;
 
+/**
+ * creates an expression by forming a recursive expression at the non-terminals:
+ * Or, in, Category, Price, rating, Name.
+ * @author anasdesouky
+ *
+ */
 public class QueryListener extends YelpQueryBaseListener {
 	private Stack<Operation> stack;
 
-	
+	/**
+	 * initializes the stack of operations
+	 */
 	public QueryListener() {
 		this.stack=new Stack<>();
 	}
+
+	/**
+	 * creates an In Query Expression
+	 */
 	@Override
 	public void exitIn(InContext ctx) {
 		List<ParseTree> Children = ctx.children;
@@ -31,6 +43,10 @@ public class QueryListener extends YelpQueryBaseListener {
 		InOp In = new InOp(getEnclosed(Bracketed));
 		stack.push(In);
 	}
+	
+	/**
+	 * creates a category Query Expression
+	 */
 	@Override
 	public void exitCategory (CategoryContext ctx) {
 		List<ParseTree> Children = ctx.children;
@@ -42,6 +58,11 @@ public class QueryListener extends YelpQueryBaseListener {
 		CategoryOp Category = new CategoryOp(getEnclosed(Bracketed));
 		stack.push(Category);
 	}
+	
+	
+	/**
+	 * creates a name Query Expression
+	 */
 	@Override
 	public void exitName (NameContext ctx) {
 		List<ParseTree> Children = ctx.children;
@@ -54,6 +75,10 @@ public class QueryListener extends YelpQueryBaseListener {
 		stack.push(Name);
 	}
 	
+	
+	/**
+	 * creates a rating Query Expression
+	 */
 	@Override
 	public void exitRating(RatingContext ctx) {
 		String Exp = ctx.getText();
@@ -64,6 +89,11 @@ public class QueryListener extends YelpQueryBaseListener {
 		RatingOp Rating = new RatingOp(ineq, number);
 		stack.push(Rating);
 	}
+	
+	
+	/**
+	 * creates a price Query Expression
+	 */
 	@Override
 	public void exitPrice(PriceContext ctx) {
 		String Exp = ctx.getText();
@@ -76,6 +106,9 @@ public class QueryListener extends YelpQueryBaseListener {
 	}
 	
 	
+	/**
+	 * creates an Or Query Expression
+	 */
 		@Override
 		public void exitOrExpr(OrExprContext ctx) {
 			List<Operation> Operations = new ArrayList<>();
@@ -95,6 +128,11 @@ public class QueryListener extends YelpQueryBaseListener {
 			stack.add(Or);
 		}
 		
+		
+		
+		/**
+		 * creates an and Query Expression
+		 */
 		@Override
 		public void exitAndExpr(AndExprContext ctx) {
 			List<Operation> Operations = new ArrayList<>();

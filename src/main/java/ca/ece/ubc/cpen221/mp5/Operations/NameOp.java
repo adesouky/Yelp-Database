@@ -8,6 +8,11 @@ import java.util.Set;
 import ca.ece.ubc.cpen221.mp5.Classes.Database;
 import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
 
+
+/**
+ * Represents a name Expression in a query 
+ *
+ */
 public class NameOp implements Operation{
 
 	private String Name;

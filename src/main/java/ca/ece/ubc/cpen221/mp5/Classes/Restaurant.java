@@ -10,18 +10,18 @@ public class Restaurant extends ReviewableObject {
 	private boolean open;
 	//private String url;
 	private double longitude; //HAS TO BE INCUDEDED
-	private List<String> neighborhoods = new ArrayList<>();
-	private String business_id; //HAS TO BE INCLUDED
+	private List<String> neighborhoods = new ArrayList<>(); //HAS TO BE INCUDEDED
+	private String business_id; 
 	//private String name;
-	private List<String> categories = new ArrayList<>();
-	private String state;
-	private String type;
-	private double stars;
-	private String city;
-	private String full_address;
+	private List<String> categories = new ArrayList<>(); //HAS TO BE INCUDEDED
+	private String state; //HAS TO BE INCUDEDED
+	private String type; 
+	private double stars; //HAS TO BE INCUDEDED
+	private String city; //HAS TO BE INCUDEDED
+	private String full_address; //HAS TO BE INCUDEDED
 	//private Long review_count;
 	//private String photo_url;
-	private List<String> schools= new ArrayList<>();
+	private List<String> schools= new ArrayList<>(); //HAS TO BE INCUDEDED
 	private double latitude; //HAS TO BE INCLUDED
 	private String JsonString;
 	//private Long price;

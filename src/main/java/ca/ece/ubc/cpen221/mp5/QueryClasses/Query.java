@@ -20,34 +20,62 @@ import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryLexer;
 import ca.ece.ubc.cpen221.mp5.Query5.YelpQueryParser;
 
 
+/**
+ * This class represents a query 
+ * with a few multiple logical operators
+ *
+ */
+
 @SuppressWarnings("deprecation")
+
 public class Query {
 	String Query;
 	Database YelpDB;
 	String Result;
 	Set<Restaurant> answer;
+	
+	
+	/**
+	 * initializes the specific query using a string and the database that will be operated on
+	 * @param Query
+	 * @param YelpDB
+	 */
 	public Query(String Query, Database YelpDB) {
 		this.Query= Query;
 		this.YelpDB= YelpDB;
 	}
 	
+	/**
+	 * uses the query to find matches in the database and returns them as a set of restaurants.
+	 * @return a set of restaurants satisfying a query
+	 */
 	
 	public Set<Restaurant>getRestaurants()  {
 		
+		//initializes an input stream
 		CharStream Charstream = new ANTLRInputStream(this.Query);
 		
+		//initilializes the lexer
 		YelpQueryLexer lexer = new YelpQueryLexer(Charstream);
 		lexer.addErrorListener(new QueryErrorHelper());
+		//initializes the token stream
 		TokenStream tokenstream = new CommonTokenStream(lexer);
+		//initializes the parser
 		YelpQueryParser parser = new YelpQueryParser(tokenstream);
 		parser.addErrorListener(new QueryErrorHelper());
 
+		//parsing to the most non-terminal operation -or
 		ParseTree tree = parser.orExpr();
-		System.err.println(tree.toStringTree(parser));
-		org.antlr.v4.gui.Trees.inspect(tree, parser);
+		
+		//walks over the tree
 		ParseTreeWalker walker = new ParseTreeWalker();
+		
+		//initializes the listener
 		QueryListener listener = new QueryListener();
+		
 		walker.walk(listener, tree);
+		
+		//returns the value last operation on the stack = the biggest and most cumulative, recursive expression
 		 answer = listener.getOp().eval(YelpDB);
 		this.Result = listener.getOp().toString();
 	
@@ -55,18 +83,11 @@ public class Query {
 		
 		
 	
-		// Evaluating the last element in the stack which corresponds to the biggest
-		// orExpr formed , i.e the full Query String passed
-		
+		//returns a string representation of the value of tha operation
 		return answer;
-		//show AST in GUI
-		
+	
 	
 		
-	}
-	public String getFinalExpr() {
-		
-		return this.Result;
 	}
 	
 	

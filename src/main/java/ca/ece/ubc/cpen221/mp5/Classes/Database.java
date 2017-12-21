@@ -52,11 +52,15 @@ public class Database implements YelpMP5DB{
 
 	
 	public List<YelpReview> getReviews(String userID) {
+		
+		synchronized (this){
 		YelpReview[] FilteredReview = ReviewList.stream().filter(  a -> a.getUserid().equals(userID)).toArray(YelpReview[] :: new);
 		List<YelpReview> FilteredReviewList =  Arrays.asList(FilteredReview);
 		return FilteredReviewList;
+		}
 	}
 	public String getRestaurantJsonString(String BusinessID) throws RestaurantNotFoundException {
+		synchronized (this){
 		try {
 		Restaurant[] ab = RestaurantList.stream().filter(x -> x.getBusinessid().equals(BusinessID)).toArray(Restaurant[] :: new);
 		Restaurant a= ab[0];
@@ -65,41 +69,50 @@ public class Database implements YelpMP5DB{
 		catch(Exception ex) {
 			throw new RestaurantNotFoundException();
 		}
+		}
 	}
 	public Restaurant getRestaurant(String BusinessID) {
-		
+		synchronized (this){
 		Restaurant[] ab = RestaurantList.stream().filter(x -> x.getBusinessid().equals(BusinessID)).toArray(Restaurant[] :: new);
 		Restaurant a= ab[0];
 		return a;
+		}
 		
 	}
 
 	@Override
 	public Set getMatches(String queryString) {
+		synchronized (this){
 		Query query = new Query(queryString, this);
 		Set<Restaurant> Restaurants = query.getRestaurants();
 		return Restaurants;
+		}
 	}
 
 	
 	
 	@Override
 	public String kMeansClusters_json(int k) {
+		synchronized (this){
 		kMeansClustering kc = new kMeansClustering(this);
 		return kc.getClustersOfResturants(k).toJSONString();
+		}
 	}
 	
 	
 	public Map kMeansClusters_Map(int k) {
+		synchronized (this){
 		kMeansClustering kc = new kMeansClustering(this);
 		
 		return kc.MapReturner(k);
+		}
 	}
 	/**
 	 * throws an illegalargumentexception if the user has 1 or less reviews.
 	 */
 	@Override
 	public ToDoubleBiFunction<MP5Db<Restaurant>, String> getPredictorFunction(String user) {
+		synchronized (this){
 		List<Double> Variables= ComputeCoefficiants(user);
 		
 		double a = Variables.get(0);
@@ -112,18 +125,22 @@ public class Database implements YelpMP5DB{
 		
 		
 		return i;
-		
+		}
 		//return null;
 	}
 	
 	
 	public List<YelpReview> getReviews(){
+		synchronized (this){
 		return new ArrayList<>(ReviewList);
+		}
 	}
 	
 	public YelpUser getUser(String Userid) {
+		synchronized (this){
 		YelpUser[] UserArray = UserList.stream().filter(x -> x.getUser_id().equals(Userid)).toArray(YelpUser[] :: new);
 		return UserArray[0];
+		}
 	}
 	@Override
 	public List<YelpUser> lookupReviews(Long UserId) {
@@ -133,48 +150,60 @@ public class Database implements YelpMP5DB{
 
 	@Override
 	public List<YelpUser> getUsers() {
+		synchronized (this){
 		return new ArrayList<>(UserList);
-		
+		}
 	}
 
 	@Override
 	public List<Restaurant> getRestaurants() {
+		synchronized (this){
 		return new ArrayList<>(RestaurantList);
-		
+		}
 	}
 
 	@Override
 	public void addUser(YelpUser c) {
+		synchronized (this){
 		UserList.add(c);
+		}
 	}
 
 	@Override
 	public void addRestaurant(Restaurant c) {
+		synchronized (this){
 	RestaurantList.add(c);
-		
+		}
 	}
 	
 	@Override
 	public void addReview(YelpReview c) {
+		synchronized (this){
 		ReviewList.add(c);
+		}
 		
 	}
 
 	@Override
 	public void removeUser(YelpUser c) {
+		synchronized (this){
 		UserList.remove(c);
-		
+		}
 	}
 
 	@Override
 	public void removeRestaurant(Restaurant c) {
+		synchronized (this){
 		RestaurantList.remove(c);
+		}
 	}
+
 
 	@Override
 	public void removeReview(YelpReview c) {
+		synchronized (this){
 		ReviewList.remove(c);
-		
+		}
 	}
 
 	private List<Double> ComputeCoefficiants(String userID){

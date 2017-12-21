@@ -6,6 +6,11 @@ import java.util.Set;
 import ca.ece.ubc.cpen221.mp5.Classes.Database;
 import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
 
+
+/**
+ * Represents an "in" Expression in a query (e.g. in(Telegraph Ave))
+ *
+ */
 public class InOp implements Operation{
 	private String Location;
 	

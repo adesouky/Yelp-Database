@@ -1,4 +1,4 @@
-package ca.ece.ubc.cpen221.mp5.Sever;
+package ca.ece.ubc.cpen221.mp5;
 
 
 
@@ -20,14 +20,11 @@ import org.json.simple.parser.ParseException;
 
 
 import ca.ece.ubc.cpen221.mp5.Classes.*;
+import ca.ece.ubc.cpen221.mp5.Sever.IllegalQueryException;
+import ca.ece.ubc.cpen221.mp5.Sever.NoMatchException;
 
 /**
- * FibonacciServerMulti is a server that finds the n^th Fibonacci number given
- * n. It accepts requests of the form: Request ::= Number "\n" Number ::= [0-9]+
- * and for each request, returns a reply of the form: Reply ::= (Number | "err")
- * "\n" where a Number is the request Fibonacci number, or "err" is used to
- * indicate a misformatted request. FinbonacciServerMulti can handle multiple
- * concurrent clients.
+ * YelpDB is a server that recieves requests or queries and responds in json format to those queries.
  */
 public class YelpDBServer {
 	/** Default port number where the server listens for connections. */
@@ -46,7 +43,7 @@ public class YelpDBServer {
 	// TODO data in handle()
 
 	/**
-	 * Make a FibonacciServerMulti that listens for connections on port.
+	 * Make a Yelp that listens for connections on port.
 	 * 
 	 * @param port
 	 *            port number, requires 0 <= port <= 65535
@@ -61,9 +58,9 @@ public class YelpDBServer {
 	 * 
 	 * @throws IOException
 	 *             if the main server socket is broken
-	 *  @throws RestaurantNotFoundException
+	 * 
 	 */
-	public void serve() throws IOException, RestaurantNotFoundException {
+	public void serve() throws IOException {
 		while (true) {
 			// block until a client connects
 			final Socket socket = serverSocket.accept();
@@ -89,7 +86,13 @@ public class YelpDBServer {
 		}
 	}
 	
-	
+	/**
+	 * private method that takes care of the getRestaurant Query
+	 
+	 * @param businessID
+	 * @return the restaurant in JSON Format if the input is valid, "ERR: INVALID_BUSINESSID_STRING "if its not,
+	 * and "ERR: NO_SUCH_RESTAURANT" if the restaurant could not be found in the database.
+	 */
 	private synchronized String getRestaurant(String businessID) {
 		String a ="";
 		if(businessID.contains((" "))) {
@@ -104,6 +107,14 @@ public class YelpDBServer {
 		return a;
 	}
 	
+	
+	/**
+	 * private method that takes care of the addUser Query
+	 * requires that the string contains the name of the user for the string to be valid
+	 * @param Json String of a user
+	 * @return the User in JSON Format if the input is valid, "ERR: INVALID_User_STRING "if its not,
+	 * 
+	 */
 	private synchronized String addUser(String s) {
 		
 		if(!isJSONValid(s)) {
@@ -121,20 +132,39 @@ public class YelpDBServer {
 		}
 	}
 	
+	
+	/**
+	 * private method that takes care of the addReview Query
+	 * requires that the json String contains the text, the stars, the date for string to be valid.
+	 * @param Json String of a review
+	 * @return the review added in JSON Format if the input is valid, "ERR: INVALID_Review_STRING "if its not,
+	 * , "ERR: NO_SUCH_RESTAURANT" if the restaurant could not be found in the database and "ERR: NO_SUCH_USER" 
+	 * if the user could not be found in the database.
+	 */
 	private synchronized String addReview(String s) {
 		if(!isJSONValid(s)) {
 			return ("ERR: INVALID_REVIEW_STRING");
 		}
 	
 		YelpReview Review;
+		Restaurant ReviewedRest;
 		try {
 			Review = new YelpReview("new", s);
+			
+			YelpUser ReviewingUser;
+			try {
+			ReviewingUser= YelpDB.getUser(Review.getUserid());
+			}
+			catch(Exception ex) {
+				return("ERR: NO_SUCH_USER");
+			}
 		
-		YelpDB.addReview(Review);
 		try {
-			Restaurant ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
+			 ReviewedRest= YelpDB.getRestaurant(Review.getBusinessid());
 			///Updating Review Count
+			
 			ReviewedRest.setReviewCount(ReviewedRest.getReviewCount()+1);
+			
 			//Updating Stars
 			double UpdatedStars = (ReviewedRest.getStars()*(ReviewedRest.getReviewCount()-1) + Review.getStars())/ReviewedRest.getReviewCount();
 			//rounding to the nearest .5
@@ -143,13 +173,7 @@ public class YelpDBServer {
 		catch(Exception ex) {
 			return("ERR: NO_SUCH_RESTAURANT");
 		}
-		YelpUser ReviewingUser;
-		try {
-		ReviewingUser= YelpDB.getUser(Review.getUserid());
-		}
-		catch(Exception ex) {
-			return("ERR: NO_SUCH_USER");
-		}
+		
 		///Updating Review Count
 		
 		ReviewingUser.setReview_count(ReviewingUser.getReview_count()+1);
@@ -157,19 +181,27 @@ public class YelpDBServer {
 		ReviewingUser.setAverage_stars((ReviewingUser.getAverage_stars()*(ReviewingUser.getReview_count()-1) + Review.getStars())/ReviewingUser.getReview_count());
 
 		
-		
-	
-		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		return("ERR: INVALID_REVIEW_STRING");
 	}
 		
-		
+		YelpDB.addReview(Review);
 		return Review.getJSONString();
 	}
 	
 
+	
+	
+	/**
+	 * private method that takes care of the addRestaurant Query
+	 *  requires that the json String contains the name of the restaurant, the location, the city, the state, neighborhoods, 
+	 * categories, schools, full_address for the string to be valid.
+	 * @param Json String of a restaurant
+	 * @return the restaurant added in JSON Format if the input is valid, "ERR: INVALID_RESTAURANT_STRING" if its not.
+	 * 
+	 */
+	
 	private synchronized String addRestaurant(String s) {
 		Restaurant Restaurant;
 	try {	if(!isJSONValid(s)) {
@@ -194,6 +226,15 @@ public class YelpDBServer {
 		
 	
 	}
+	
+
+	/**
+	 * private method that takes care of the Queries starting with the word Query
+	 * @param  a Query
+	 * @return the list of all restaurants that satisfy the query in the database in json Format;
+	 * 
+	 */
+	
 	
 	
 	private synchronized List<String>  getResponse(String Query) throws Exception, NoMatchException {
@@ -297,19 +338,22 @@ public class YelpDBServer {
 		}
 	}
 	
-
+	/**
+	 * Starts a YelpServer running on the default port.
+	 */
 	public static void main(String[] args) {
 		try {
 			YelpDBServer server = new YelpDBServer(YELP_PORT, "data/restaurants.json", "data/reviews.json" , "data/users.json");
 			server.serve();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (RestaurantNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 	
+	
+	/**
+	 * a helper method that validates whether or not a json string is valid
+	 */
 	private boolean isJSONValid(String test) {
 		try {
 			

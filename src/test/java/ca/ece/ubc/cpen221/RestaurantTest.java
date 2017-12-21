@@ -134,7 +134,9 @@ public class RestaurantTest {
 		Restaurant rest1 = new Restaurant("Starbucks");
 		
 		rest1.setStars(3.5);
+		rest1.setReviewCount((long) 467);
 		assertEquals(3.5, rest1.getStars(), 0.001);
+		assertEquals(467, rest1.getReviewCount(), 0.001);
 		
 	//	db.addRestaurant(rest1);
 	}

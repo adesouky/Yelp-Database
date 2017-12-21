@@ -4,6 +4,12 @@ import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
+
+/**
+ * throws an exception whenever it sees an error
+ * @author anasdesouky
+ *
+ */
 public class QueryErrorHelper extends BaseErrorListener {
 	
 
