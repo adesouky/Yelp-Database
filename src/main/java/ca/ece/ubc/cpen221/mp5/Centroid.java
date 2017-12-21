@@ -8,6 +8,9 @@ import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
 public class Centroid {
 	private double latitude;
 	private double longitude;
+	int[] intArray = {10, 10, 10, 10, 10}; // statement 2
+	int[] intArray2 = new int[5]; // statement 2
+	
 	//Map<Character, Double> centroid;
 	
 	/**
