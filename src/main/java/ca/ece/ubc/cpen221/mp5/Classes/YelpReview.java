@@ -7,6 +7,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+/**
+ * This is a YelpReview Representation
+ * @author anasdesouky
+ *
+ */
 public class YelpReview extends Review {
 	
 

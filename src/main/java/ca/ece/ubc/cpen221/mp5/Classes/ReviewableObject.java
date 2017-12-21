@@ -8,6 +8,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+/**
+ * Reviewable Object Representation for YelpDB
+ * @author anasdesouky
+ *
+ */
 public class ReviewableObject {
 	
 	

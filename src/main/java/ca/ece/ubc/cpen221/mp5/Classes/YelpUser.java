@@ -6,6 +6,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+/**
+ * This is a YelpUser Representation
+ * @author anasdesouky
+ *
+ */
 public class YelpUser extends User{
 	private Map<String, Long> votes= new HashMap<>();
 	private Long review_count;

@@ -4,6 +4,12 @@ import java.util.*;
 
 import ca.ece.ubc.cpen221.mp5.Classes.MP5Db;
 
+
+/**
+ * YelpMP5DB, an interface roughly specified to fit the functions of yelpdb
+ * @author anasdesouky
+ *
+ */
 public interface YelpMP5DB extends MP5Db {
 
 	public List<YelpUser> lookupReviews( Long UserId);

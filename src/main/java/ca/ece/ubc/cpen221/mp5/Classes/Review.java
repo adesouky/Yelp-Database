@@ -5,7 +5,11 @@ import java.util.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+/**
+ * Review Representation for YelpDB
+ * @author anasdesouky
+ *
+ */
 public class Review {
 	private String text;
 	private String date;

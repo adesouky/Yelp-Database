@@ -9,7 +9,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import ca.ece.ubc.cpen221.mp5.Classes.*;
-
+/**
+ * acts as a represnation of an algorithm that forms k clusters 
+ * @author anasdesouky
+ *
+ */
 
 public class kMeansClustering  {
 	

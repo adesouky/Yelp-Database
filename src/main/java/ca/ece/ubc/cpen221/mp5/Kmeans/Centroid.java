@@ -4,7 +4,11 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ca.ece.ubc.cpen221.mp5.Classes.Restaurant;
-
+/**
+ * Acts as a representation for a centroid of restaurants.
+ * @author anasdesouky
+ *
+ */
 public class Centroid {
 	private double latitude;
 	private double longitude;

@@ -8,6 +8,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * User Representation For YelpDB
+ * @author anasdesouky
+ *
+ */
 public class User {
 	private String url;
 	private String user_id;

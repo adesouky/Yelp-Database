@@ -11,7 +11,11 @@ import ca.ece.ubc.cpen221.mp5.Classes.MP5Db;
 
 import ca.ece.ubc.cpen221.mp5.Kmeans.kMeansClustering;
 import ca.ece.ubc.cpen221.mp5.QueryClasses.Query;
-
+/**
+ * Database Representation for YelpDb
+ * @author anasdesouky
+ *
+ */
 
 public class Database implements YelpMP5DB{
 	

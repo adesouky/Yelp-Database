@@ -5,6 +5,11 @@ import java.util.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
+/**
+ * Restaurant Representation for YelpDB
+ * @author anasdesouky
+ *
+ */
 public class Restaurant extends ReviewableObject {
 	
 	private boolean open;
