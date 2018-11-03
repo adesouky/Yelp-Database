@@ -36,3 +36,7 @@ jacocoTestReport {
         // xml.destination "${buildDir}/reports/coverage"
     }
 }
+
+coveralls {
+    jacocoReportPath 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
+}
