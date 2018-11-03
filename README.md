@@ -1,4 +1,4 @@
-# YELP DATABASE [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6daa4114453346529a5c478e441a2201)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CPEN-221/f17-mp5-megan-and-anas&amp;utm_campaign=Badge_Grade) [![Coverage Status](https://coveralls.io/repos/github/adesouky/Yelp-Database/badge.svg?branch=master)](https://coveralls.io/github/adesouky/Yelp-Database?branch=master)
+# YELP DATABASE [![Build Status](https://travis-ci.com/adesouky/Yelp-Database.svg?branch=master)](https://travis-ci.com/adesouky/Yelp-Database) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6daa4114453346529a5c478e441a2201)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CPEN-221/f17-mp5-megan-and-anas&amp;utm_campaign=Badge_Grade) [![Coverage Status](https://coveralls.io/repos/github/adesouky/Yelp-Database/badge.svg?branch=master)](https://coveralls.io/github/adesouky/Yelp-Database?branch=master)
 
 Restaurants, Queries and Statistical Learning
 ===
