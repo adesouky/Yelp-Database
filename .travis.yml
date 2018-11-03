@@ -1,7 +1,8 @@
 env:
   global:
     - CI_NAME=travis-pro
-    - COVERALLS_REPO_TOKEN=ANwwFyxSoYUvGWmHIRRjH5coUWkAbsEDr
+    - COVERALLS_REPO_TOKEN= GE19xAZlricEetWKcSND3It5iKWy8Uk3P
+
 
 language: java
 jdk:
