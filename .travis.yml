@@ -9,6 +9,6 @@ jdk:
   - oraclejdk8          // tells Travis to use Java 8
 
 after_success:
-  - ./gradlew jacocoTestReport coveralls
+  - bash <(curl -s https://codecov.io/bash)
   
   
